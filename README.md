@@ -1,8 +1,7 @@
-vocabnomad
+VocabNomad
 ==========
 
 JIT algorithms:
 http://vnjitvocab.taglab.utoronto.ca/AlgorithmVocabulary/help
-
-Vocabulary sync:
+Vocabulary sync: 
 http://vndatasync.taglab.utoronto.ca/DataSyncRestService/help
