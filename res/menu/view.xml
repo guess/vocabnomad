@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/action_tts"
+          android:title="@string/listen"
+          android:icon="@drawable/speaker_muted"
+          android:showAsAction="ifRoom" />
+
+    <!-- Edit the word -->
+    <item android:id="@+id/action_edit"
+          android:title="@string/edit_word"
+          android:icon="@drawable/content_edit"
+          android:showAsAction="ifRoom" />
+
+</menu>

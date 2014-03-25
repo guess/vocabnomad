@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">VocabNomad</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="word">Word</string>
+    <string name="sentence">Sentence</string>
+    <string name="definition">Definition</string>
+    <string name="save">Save</string>
+    <string name="edit_word">Edit word</string>
+    <string name="add_word">Add word</string>
+    <string name="view_word">View word</string>
+    <string name="shared">Shared</string>
+    <string name="tags">Tags</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_tag">Add tag</string>
+    <string name="tag">Tag</string>
+    <string name="action_remove_tag">Remove tag</string>
+    <string name="delete">Delete</string>
+    <string name="image">Image</string>
+    <string name="similar">Is similar to...</string>
+    <string name="close_filter">Close filter</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Photo gallery</string>
+    <string name="quit">Exit?</string>
+    <string name="really_quit">The changes you made won\'t be saved.</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="record">Record</string>
+    <string name="no_recording">Record something!</string>
+    <string name="say_something">Say something!</string>
+    <string name="your_recording">Your recording</string>
+    <string name="search">Search</string>
+    <string name="words">Words</string>
+    <string name="listen">Listen</string>
+    <string name="choose_language">Select your native language</string>
+    <string name="cont">Continue</string>
+    <string name="language">Language</string>
+</resources>

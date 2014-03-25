@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white" >
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+        <ImageView
+                android:id="@+id/search"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="70dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/search"
+                android:contentDescription="@string/search" />
+
+        <ProgressBar
+                android:id="@+id/progress"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginTop="120dp"
+                android:layout_gravity="center_horizontal"
+                android:indeterminate="true"
+                android:visibility="gone" />
+
+        <LinearLayout
+                android:id="@+id/results"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone" >
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:padding="8dp"
+                android:textSize="30sp"
+                android:textColor="@android:color/black"
+                android:background="@android:color/holo_blue_light"
+                android:text="@string/tags" />
+
+            <LinearLayout
+                    android:id="@+id/tags"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:showDividers="middle"
+                    android:divider="?android:dividerHorizontal"
+                    android:animateLayoutChanges="true"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp" />
+
+            <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:padding="8dp"
+                    android:textSize="30sp"
+                    android:textColor="@android:color/black"
+                    android:background="@android:color/holo_blue_light"
+                    android:text="@string/words" />
+
+            <LinearLayout
+                    android:id="@+id/vocab"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:showDividers="middle"
+                    android:divider="?android:dividerHorizontal"
+                    android:animateLayoutChanges="true"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</ScrollView>
