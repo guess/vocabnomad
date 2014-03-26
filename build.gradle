@@ -10,11 +10,14 @@ apply plugin: 'android'
 
 dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
+
+    // Google Play Services
+    compile 'com.google.android.gms:play-services:4.3.23'
 }
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.0.1"
+    buildToolsVersion "19.0.3"
 
     sourceSets {
         main {

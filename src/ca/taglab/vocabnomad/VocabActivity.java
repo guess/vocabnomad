@@ -6,6 +6,7 @@ import android.content.AsyncQueryHandler;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -15,6 +16,13 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+
 import ca.taglab.vocabnomad.adapter.VocabAdapter;
 import ca.taglab.vocabnomad.auth.LanguageActivity;
 import ca.taglab.vocabnomad.auth.LoginActivity;
@@ -25,8 +33,33 @@ import ca.taglab.vocabnomad.db.UserEvents;
 import ca.taglab.vocabnomad.rest.DataSyncRestService;
 import ca.taglab.vocabnomad.rest.RestService;
 
-public class VocabActivity extends ListActivity {
+public class VocabActivity extends ListActivity implements
+        GooglePlayServicesClient.ConnectionCallbacks,
+        GooglePlayServicesClient.OnConnectionFailedListener,
+        LocationListener {
     public static final String TAG = "VocabActivity";
+
+    // Milliseconds per second
+    private static final int MILLISECONDS_PER_SECOND = 1000;
+
+    // Update frequency in seconds
+    public static final int UPDATE_INTERVAL_IN_SECONDS = 60;
+
+    // Update frequency in milliseconds
+    private static final long UPDATE_INTERVAL = MILLISECONDS_PER_SECOND * UPDATE_INTERVAL_IN_SECONDS;
+
+    // The fastest update frequency, in seconds
+    private static final int FASTEST_INTERVAL_IN_SECONDS = 30;
+
+    // A fast frequency ceiling in milliseconds
+    private static final long FASTEST_INTERVAL = MILLISECONDS_PER_SECOND * FASTEST_INTERVAL_IN_SECONDS;
+
+    // Define an object that holds accuracy and frequency parameters
+    private LocationRequest mLocationRequest;
+
+    // Google Play Services location client
+    private LocationClient mLocationClient;
+
 
     public static final int USER_LOGIN = 1;
     public static final int LANGUAGE = 2;
@@ -84,6 +117,60 @@ public class VocabActivity extends ListActivity {
     };
 
 
+    private void setLocationRequest() {
+        // Create the LocationRequest object
+        mLocationRequest = LocationRequest.create();
+        // Use high accuracy
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        // Set the update interval to 5 seconds
+        mLocationRequest.setInterval(UPDATE_INTERVAL);
+        // Set the fastest update interval to 1 second
+        mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
+    }
+
+    /*
+     * Called by Location Services when the request to connect the
+     * client finishes successfully. At this point, you can
+     * request the current location or start periodic updates
+     */
+    @Override
+    public void onConnected(Bundle bundle) {
+        // If already requested, start periodic updates
+        mLocationClient.requestLocationUpdates(mLocationRequest, this);
+    }
+
+    /*
+     * Called by Location Services if the connection to the
+     * location client drops because of an error.
+     */
+    @Override
+    public void onDisconnected() {
+        // Do nothing
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        UserEvents.setLocation(location.getLongitude(), location.getLatitude(), location.getAltitude());
+    }
+
+    /*
+     * Called by Location Services if the attempt to
+     * Location Services fails.
+     */
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        // Do nothing
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mLocationClient.isConnected()) {
+            mLocationClient.removeLocationUpdates(this);
+        }
+        mLocationClient.disconnect();
+        super.onDestroy();
+    }
+
     private static final class QueryHandler extends AsyncQueryHandler {
         public static final int TOKEN_WORD = 1;
         public static final int TOKEN_RESET = 2;
@@ -133,6 +220,11 @@ public class VocabActivity extends ListActivity {
             actionBar.setTitle("");
             actionBar.hide();
         }
+
+        // Create new location client, using enclosing class to handle callbacks
+        setLocationRequest();
+        mLocationClient = new LocationClient(this, this, this);
+        mLocationClient.connect();
 
         // Initialize the databases
         init();

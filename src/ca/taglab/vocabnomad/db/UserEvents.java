@@ -4,8 +4,15 @@ package ca.taglab.vocabnomad.db;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Bundle;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import ca.taglab.vocabnomad.auth.UserManager;
@@ -22,6 +29,8 @@ public class UserEvents extends DAO {
     public static HashMap<String, Long> mUserEventIds;
 
     private static Context context;
+
+    private static double longitude = 0, latitude = 0, altitude = 0;
 
 
     /**
@@ -92,6 +101,7 @@ public class UserEvents extends DAO {
 
             @Override
             public void run() {
+                Location location;
                 String message;
                 DatabaseHelper db = DatabaseHelper.getInstance(UserEvents.context);
                 ContentValues values = new ContentValues();
@@ -127,9 +137,34 @@ public class UserEvents extends DAO {
                     message += " TagSID=" + values.getAsString(Contract.UserEvents.TAG_SID);
                 }
 
-                values.put(Contract.UserEvents.LONG, 0);
-                values.put(Contract.UserEvents.LAT, 0);
-                values.put(Contract.UserEvents.ALT, 0);
+
+                /*
+                if ((location = getLocation()) != null) {
+                    values.put(Contract.UserEvents.LONG, location.getLongitude());
+                    message += " Long=" + location.getAltitude();
+
+                    values.put(Contract.UserEvents.LAT, location.getLatitude());
+                    message += " Lat=" + location.getAltitude();
+
+                    values.put(Contract.UserEvents.ALT, location.getAltitude());
+                    message += " Alt=" + location.getAltitude();
+                } else {
+                    values.put(Contract.UserEvents.LONG, 0);
+                    message += " Long=" + 0;
+                    values.put(Contract.UserEvents.LAT, 0);
+                    message += " Lat=" + 0;
+                    values.put(Contract.UserEvents.ALT, 0);
+                    message += " Alt=" + 0;
+                }*/
+
+                values.put(Contract.UserEvents.LONG, longitude);
+                message += " Long=" + longitude;
+                values.put(Contract.UserEvents.LAT, latitude);
+                message += " Lat=" + latitude;
+                values.put(Contract.UserEvents.ALT, altitude);
+                message += " Alt=" + altitude;
+
+
                 values.put(Contract.UserEvents.LANG_MAP, 0);
                 values.put(Contract.UserEvents.ACTIVITY, 0);
                 values.put(Contract.UserEvents.LOCATION, 0);
@@ -142,6 +177,41 @@ public class UserEvents extends DAO {
             }
         }).start();
     }
+
+    /**
+     * Get the user's current location
+     * @return  The user's current location
+     */
+    private static Location getLocation() {
+        LocationManager locationManager;
+        String provider;
+
+        // Get location manager
+        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        boolean enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+        // Check if enabled and if not send user to the GPS settings
+        if (!enabled) {
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        }
+
+        // Define the criteria how to select the location provider -> use default
+        Criteria criteria = new Criteria();
+        provider = locationManager.getBestProvider(criteria, false);
+        Log.i(TAG, "Provider " + provider + " has been selected");
+
+        return locationManager.getLastKnownLocation(provider);
+    }
+
+
+    public static void setLocation(double longitude, double latitude, double altitude) {
+        UserEvents.longitude = longitude;
+        UserEvents.latitude = latitude;
+        UserEvents.altitude = altitude;
+    }
+
 
     public UserEvents() {
         super();

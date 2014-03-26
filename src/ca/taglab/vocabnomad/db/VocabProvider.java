@@ -307,8 +307,6 @@ public class VocabProvider extends ContentProvider {
                 } else {
                     where = ADD_CONSTRAINT(where, Contract.View.DELETED, 0);
                 }
-
-                Log.i("Word", where);
                 break;
 
             case WORD_SYN:
@@ -322,8 +320,6 @@ public class VocabProvider extends ContentProvider {
                 //where = ADD_CONSTRAINT(where, Contract.Synonyms.ENTRY_SID, uri.getPathSegments().get(3));
                 where += " AND (" + Contract.Synonyms.ENTRY_SID + "=" + uri.getPathSegments().get(3)
                         + " OR " + Contract.Synonyms.ENTRY_SYN_SID + "=" + uri.getPathSegments().get(3) + ")";
-
-                Log.i("Synonyms: ", where);
                 break;
 
 
