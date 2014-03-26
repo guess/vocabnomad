@@ -96,6 +96,9 @@ public class UserEvents extends DAO {
                 DatabaseHelper db = DatabaseHelper.getInstance(UserEvents.context);
                 ContentValues values = new ContentValues();
 
+                // INIT HASN'T FINISHED YET
+                if (mUserEventIds == null) return;
+
                 values.put(Contract.UserEvents.TYPE, mUserEventIds.get(eventName));
                 message = eventName + " @ ";
 

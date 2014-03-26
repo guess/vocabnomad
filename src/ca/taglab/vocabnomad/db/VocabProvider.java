@@ -319,7 +319,9 @@ public class VocabProvider extends ContentProvider {
                 table = Contract.Synonyms.TABLE;
                 if (projection == null) projection = Contract.Synonyms.PROJECTION;
                 where = ADD_CONSTRAINT(where, Contract.Synonyms.USER_ID, uri.getPathSegments().get(1));
-                where = ADD_CONSTRAINT(where, Contract.Synonyms.ENTRY_SID, uri.getPathSegments().get(3));
+                //where = ADD_CONSTRAINT(where, Contract.Synonyms.ENTRY_SID, uri.getPathSegments().get(3));
+                where += " AND (" + Contract.Synonyms.ENTRY_SID + "=" + uri.getPathSegments().get(3)
+                        + " OR " + Contract.Synonyms.ENTRY_SYN_SID + "=" + uri.getPathSegments().get(3) + ")";
 
                 Log.i("Synonyms: ", where);
                 break;

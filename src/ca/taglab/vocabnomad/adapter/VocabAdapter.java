@@ -30,6 +30,7 @@ import ca.taglab.vocabnomad.types.Word;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class VocabAdapter extends CursorAdapter {
 
@@ -174,7 +175,11 @@ public class VocabAdapter extends CursorAdapter {
             Cursor synonyms, names = null;
             holder = params[0];
 
-            // Get the synonyms for this word
+            /*
+            Get the synonyms for this word.
+            Note that this will return all synonym objects with the SID contained in the
+            entry AND synonym column (for circular synonyms)
+             */
             Uri.Builder builder = Contract.Word.getUri().buildUpon();
             ContentUris.appendId(builder, holder.sid);
             builder.appendEncodedPath(Contract.Synonyms.TABLE);
@@ -195,11 +200,20 @@ public class VocabAdapter extends CursorAdapter {
                     viewed = true;
                 }
 
+                // Array list will hold all synonyms
+                ArrayList<Long> syns = new ArrayList<Long>();
+
                 // Check to see if any of its synonyms have been viewed at least 4 times
                 while (!synonyms.isAfterLast() && !viewed) {
+
                     if (hasBeenViewed(synonyms.getLong(synonyms.getColumnIndex(Contract.Synonyms.ENTRY_SYN_SID)), 4)) {
                         viewed = true;
                     }
+
+                    if (hasBeenViewed(synonyms.getLong(synonyms.getColumnIndex(Contract.Synonyms.ENTRY_SID)), 4)) {
+                        viewed = true;
+                    }
+
                     synonyms.moveToNext();
                 }
 
@@ -208,9 +222,17 @@ public class VocabAdapter extends CursorAdapter {
                     // Get a new cursor that contains the names of synonyms
                     String selection = "";
                     while (!synonyms.isAfterLast()) {
+                        long id;
+                        if (holder.sid != synonyms.getLong(synonyms.getColumnIndex(Contract.Synonyms.ENTRY_SID))) {
+                            // Synonym is in the 'entry' column
+                            id = synonyms.getLong(synonyms.getColumnIndex(Contract.Synonyms.ENTRY_SID));
+                        } else {
+                            // Synonym is the 'syn' column
+                            id = synonyms.getLong(synonyms.getColumnIndex(Contract.Synonyms.ENTRY_SYN_SID));
+                        }
+
                         if (!TextUtils.isEmpty(selection)) selection += " OR ";
-                        selection += Contract.Word.SERVER_ID + "="
-                                + synonyms.getLong(synonyms.getColumnIndex(Contract.Synonyms.ENTRY_SYN_SID));
+                        selection += Contract.Word.SERVER_ID + "=" + id;
                         synonyms.moveToNext();
                     }
 
@@ -228,6 +250,8 @@ public class VocabAdapter extends CursorAdapter {
                     return names;
                 }
             }
+
+            if (synonyms != null) synonyms.close();
 
             return null;
         }
@@ -310,6 +334,9 @@ public class VocabAdapter extends CursorAdapter {
                     cursor.moveToNext();
                 }
             }
+
+            if (cursor != null) cursor.close();
+
         }
     }
 

@@ -127,10 +127,12 @@ public class VocabActivity extends ListActivity {
         });
 
         ActionBar actionBar = getActionBar();
-        actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.search_bg));
-        actionBar.setIcon(R.drawable.launch_icon);
-        actionBar.setTitle("");
-        actionBar.hide();
+        if (actionBar != null) {
+            actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.search_bg));
+            actionBar.setIcon(R.drawable.launch_icon);
+            actionBar.setTitle("");
+            actionBar.hide();
+        }
 
         // Initialize the databases
         init();
@@ -366,7 +368,7 @@ public class VocabActivity extends ListActivity {
         } else {
             checkMotherTongue();
             syncVocab();
-            // TODO: PERSONALIZE getActionBar().setTitle(UserManager.getUsername());
+            if (getActionBar() != null) getActionBar().setTitle(UserManager.getUsername());
         }
     }
 
