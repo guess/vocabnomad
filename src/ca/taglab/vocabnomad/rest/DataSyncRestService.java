@@ -113,7 +113,7 @@ public class DataSyncRestService extends IntentService {
 
             // Get the date this object was last synced
             SharedPreferences settings = context.getSharedPreferences(TAG, 0);
-            mSyncDate = settings.getString(UserManager.getUserId() + DATE_GET + this.mType, Contract.DEFAULT_DATE);
+            mSyncDate = settings.getString(DATE_GET + this.mType, Contract.DEFAULT_DATE);
             Log.i(TAG, "Sync date: " + mSyncDate);
         }
 
@@ -194,7 +194,7 @@ public class DataSyncRestService extends IntentService {
                     SharedPreferences settings = mContext.getSharedPreferences(TAG, 0);
                     SharedPreferences.Editor editor = settings.edit();
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
-                    editor.putString(UserManager.getUserId() + DATE_GET + mType, format.format(new Date()));
+                    editor.putString(DATE_GET + mType, format.format(new Date()));
                     editor.commit();
 
                     if (array.length() == 0 && mHandler != null) {
@@ -380,7 +380,7 @@ public class DataSyncRestService extends IntentService {
         DAO object;
         JSONArray array = new JSONArray();
 
-        if (cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
             int count = 0;
 
             /*
@@ -445,7 +445,7 @@ public class DataSyncRestService extends IntentService {
 
         }
 
-        cursor.close();
+        if (cursor != null) cursor.close();
 
     }
 
