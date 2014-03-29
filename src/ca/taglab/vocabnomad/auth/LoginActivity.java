@@ -108,6 +108,7 @@ public class LoginActivity extends Activity {
 
             } catch (Exception e) {
                 Log.i(TAG, "Username does not exist");
+                e.printStackTrace();
             }
 
             return null;
