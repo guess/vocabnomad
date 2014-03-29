@@ -38,4 +38,10 @@
     <string name="cont">Continue</string>
     <string name="language">Language</string>
     <string name="goal">Goal</string>
+    <string name="reading">Reading</string>
+    <string name="writing">Writing</string>
+    <string name="listening">Listening</string>
+    <string name="speaking">Speaking</string>
+    <string name="action_expand">Expand</string>
+    <string name="skill">Skill</string>
 </resources>
