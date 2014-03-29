@@ -14,6 +14,14 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp" />
 
+        <include android:id="@+id/read_details" layout="@layout/olm_skill_details" />
+
+        <include android:id="@+id/write_details" layout="@layout/olm_skill_details" />
+
+        <include android:id="@+id/listen_details" layout="@layout/olm_skill_details" />
+
+        <include android:id="@+id/speak_details" layout="@layout/olm_skill_details" />
+
     </LinearLayout>
 
 </ScrollView>
