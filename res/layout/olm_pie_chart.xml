@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white" android:orientation="vertical" >
+
+        <LinearLayout android:id="@+id/chart" android:orientation="horizontal"
+            android:layout_width="fill_parent" android:layout_height="485dp"
+            android:layout_marginTop="-85dp" android:layout_marginBottom="-8dp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="-75dp">
+
+            <ImageView
+                android:id="@+id/read"
+                android:layout_height="70dp"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:src="@drawable/read"/>
+
+            <ImageView
+                android:id="@+id/write"
+                android:layout_height="70dp"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:src="@drawable/write"/>
+
+            <ImageView
+                android:id="@+id/listen"
+                android:layout_height="70dp"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:src="@drawable/listen"/>
+
+            <ImageView
+                android:id="@+id/speak"
+                android:layout_height="70dp"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:src="@drawable/speak"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="5dip"
+        android:background="@drawable/drop_shadow"
+        android:layout_marginTop="-5dp"
+        >
+    </View>
+
+</LinearLayout>

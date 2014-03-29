@@ -37,4 +37,5 @@
     <string name="choose_language">Select your native language</string>
     <string name="cont">Continue</string>
     <string name="language">Language</string>
+    <string name="goal">Goal</string>
 </resources>

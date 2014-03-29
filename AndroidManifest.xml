@@ -4,7 +4,7 @@
           android:versionCode="1"
           android:versionName="1.0">
     <uses-sdk
-            android:minSdkVersion="19"
+            android:minSdkVersion="18"
             android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -33,7 +33,25 @@
             </intent-filter>
         </activity-->
 
-        <activity android:name=".VocabActivity"
+        <!--activity android:name=".VocabActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity-->
+
+        <!--activity android:name=".GoalsActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity-->
+
+        <activity android:name=".olm.LearnerModelActivity"
                   android:label="@string/app_name"
                   android:screenOrientation="portrait" >
             <intent-filter>
