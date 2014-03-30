@@ -32,13 +32,9 @@ public class OverviewFragment extends Fragment {
 
         if (layout != null) {
             mReadDetails = (ViewGroup) layout.findViewById(R.id.read_details);
-            mReadDetails.setOnClickListener(new ExpandCollapse());
             mWriteDetails = (ViewGroup) layout.findViewById(R.id.write_details);
-            mWriteDetails.setOnClickListener(new ExpandCollapse());
             mListenDetails = (ViewGroup) layout.findViewById(R.id.listen_details);
-            mListenDetails.setOnClickListener(new ExpandCollapse());
             mSpeakDetails = (ViewGroup) layout.findViewById(R.id.speak_details);
-            mSpeakDetails.setOnClickListener(new ExpandCollapse());
             drawDetails();
         }
 

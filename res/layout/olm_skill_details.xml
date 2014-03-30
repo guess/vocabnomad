@@ -7,6 +7,7 @@
     android:layout_margin="10dp">
 
     <LinearLayout
+        android:id="@+id/skill_header"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
@@ -37,7 +38,8 @@
             android:layout_weight="1"
             android:padding="8dp"
             android:src="@drawable/ic_action_expand"
-            android:contentDescription="@string/action_expand"/>
+            android:contentDescription="@string/action_expand"
+            android:visibility="invisible" />
 
     </LinearLayout>
 
