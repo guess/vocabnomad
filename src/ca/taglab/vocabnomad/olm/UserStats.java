@@ -96,7 +96,7 @@ public class UserStats {
 
         // Get the vocabulary that are associated with the given actions
         String vocabulary =
-                "SELECT " + Contract.UserEvents.DEVICE_ID + " " +
+                "SELECT " + Contract.UserEvents.VOCAB_ID + " " +
                 "FROM " +  Contract.UserEvents.TABLE + " " +
                 "WHERE " + getSelection(actions);
 
@@ -107,12 +107,68 @@ public class UserStats {
                 "SELECT " + Contract.View.NAME + ", COUNT(" + Contract.View.NAME + ") AS tag_count " +
                 "FROM " + Contract.View.TABLE + " " +
                 "INNER JOIN (" + vocabulary + ") AS vocabulary " +
-                "ON vocabulary." + Contract.UserEvents.DEVICE_ID + "=" +
+                "ON vocabulary." + Contract.UserEvents.VOCAB_ID + "=" +
                 Contract.View.TABLE + "." + Contract.View.WORD_ID + " " +
                 "GROUP BY " + Contract.View.NAME + " " +
                 "ORDER BY tag_count DESC";
 
         return db.rawQuery(join, null);
+    }
+
+
+    /**
+     * Return the cursor that contains the words most interacted with within a particular tag.
+     * @param context   Activity or application context
+     * @param tag       Tag
+     * @return          Words most interacted within the tag.
+     */
+    public static Cursor getFavWords(Context context, String tag) {
+        if (TextUtils.isEmpty(tag)) return null;
+        DatabaseHelper db = DatabaseHelper.getInstance(context);
+
+        String vocabulary =
+                "SELECT " + Contract.View.ENTRY + ", " + Contract.View.TABLE + "." + Contract.View.WORD_ID + " " +
+                "FROM " + Contract.View.TABLE + " " +
+                "WHERE " + Contract.View.NAME + "=?";
+
+        // TODO: Might have to filter out the vocabulary list viewing???
+        String join =
+                "SELECT COUNT(vocabulary." + Contract.View.WORD_ID + ") as word_count, " + Contract.View.ENTRY + " " +
+                "FROM (" + vocabulary + ") AS vocabulary " +
+                "INNER JOIN " + Contract.UserEvents.TABLE + " " +
+                "ON vocabulary." + Contract.View.WORD_ID + "=" +
+                Contract.UserEvents.TABLE + "." + Contract.UserEvents.VOCAB_ID + " " +
+                "GROUP BY vocabulary." + Contract.View.WORD_ID + " " +
+                "ORDER BY word_count DESC";
+
+        return db.rawQuery(join, new String[] { tag });
+    }
+
+    /**
+     * Return a cursor containing the tags that are most related to a particular tag.
+     * @param context   Activity or application context
+     * @param tag       Tag
+     * @return          Tags that are most related to a particular tag
+     */
+    public static Cursor getRelatedTags(Context context, String tag) {
+        if (TextUtils.isEmpty(tag)) return null;
+        DatabaseHelper db = DatabaseHelper.getInstance(context);
+
+        String vocabulary =
+                "SELECT " + Contract.View.WORD_ID + " " +
+                "FROM " + Contract.View.TABLE + " " +
+                "WHERE " + Contract.View.NAME + "=?";
+
+        String join =
+                "SELECT " + Contract.View.NAME + ", COUNT(" + Contract.View.NAME + ") AS tag_count " +
+                "FROM (" + vocabulary + ") AS vocabulary " +
+                "INNER JOIN " + Contract.View.TABLE + " " +
+                "ON (vocabulary." + Contract.View.WORD_ID + "=" +
+                Contract.View.TABLE + "." + Contract.View.WORD_ID + " AND name !=?) " +
+                "GROUP BY " + Contract.View.NAME + " " +
+                "ORDER BY tag_count DESC";
+
+        return db.rawQuery(join, new String[] { tag, tag });
     }
 
 

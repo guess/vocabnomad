@@ -1,0 +1,54 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:vocabnomad="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    tools:context="ca.taglab.vocabnomad.olm.CategoryTitleFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:orientation="horizontal" >
+
+        <ImageView android:id="@+id/image1"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:layout_weight="1"
+            android:src="@drawable/image_placeholder" />
+
+        <ImageView android:id="@+id/image2"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:layout_weight="1"
+            android:src="@drawable/image_placeholder"/>
+
+        <ImageView android:id="@+id/image3"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:layout_weight="1"
+            android:src="@drawable/image_placeholder"/>
+
+        <ImageView android:id="@+id/image4"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:layout_weight="1"
+            android:src="@drawable/image_placeholder" />
+
+    </LinearLayout>
+
+    <ca.taglab.vocabnomad.widgets.TypefacedTextView android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="50sp"
+        android:layout_gravity="bottom"
+        android:paddingLeft="8dp"
+        android:textColor="@color/white"
+        vocabnomad:typeface="Roboto-Light.ttf"
+        android:background="@drawable/bg_gradient_text" />
+
+</FrameLayout>
