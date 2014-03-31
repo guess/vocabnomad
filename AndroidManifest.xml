@@ -60,6 +60,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".olm.TagDetailsActivity"
+            android:label="@string/tag" />
+
         <activity android:name=".auth.LoginActivity"
                   android:label="@string/login" />
 

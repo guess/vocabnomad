@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#DDDDDD"
-    tools:context="ca.taglab.vocabnomad.olm.TagDetailsFragment">
+    tools:context="ca.taglab.vocabnomad.olm.TagDetailsActivity">
 
     <fragment android:id="@+id/tag_title"
         android:name="ca.taglab.vocabnomad.olm.CategoryTitleFragment"

@@ -78,6 +78,9 @@ public abstract class CardListFragment extends Fragment {
     public abstract String getTextColumnName();
 
 
+    public abstract View.OnClickListener getItemClickListener();
+
+
     /**
      * Fill the list values on a separate thread.
      */
@@ -97,8 +100,11 @@ public abstract class CardListFragment extends Fragment {
                                 .inflate(R.layout.widget_card_list_item, mList, false);
                         if (newView != null && getTextColumnName() != null) {
                             String text = cursor.getString(cursor.getColumnIndex(getTextColumnName()));
-                            if (!TextUtils.isEmpty(text))
+                            if (!TextUtils.isEmpty(text)) {
                                 ((TypefacedTextView) newView.findViewById(R.id.text)).setText(text);
+                                newView.setTag(text);
+                                newView.setOnClickListener(getItemClickListener());
+                            }
                             mList.addView(newView, i);
                         }
                         cursor.moveToNext();

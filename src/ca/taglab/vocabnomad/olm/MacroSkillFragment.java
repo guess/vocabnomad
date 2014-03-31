@@ -1,7 +1,10 @@
 package ca.taglab.vocabnomad.olm;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 
 import ca.taglab.vocabnomad.R;
 import ca.taglab.vocabnomad.db.Contract;
@@ -43,6 +46,23 @@ public class MacroSkillFragment extends CardListFragment {
     @Override
     public String getTextColumnName() {
         return Contract.View.NAME;
+    }
+
+
+    @Override
+    public View.OnClickListener getItemClickListener() {
+        return new ItemClick();
+    }
+
+    class ItemClick implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            String tag = (String) view.getTag();
+            Intent intent = new Intent(getActivity(), TagDetailsActivity.class);
+            intent.putExtra(TagDetailsActivity.TAG_NAME, tag);
+            startActivity(intent);
+        }
     }
 
 

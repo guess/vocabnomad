@@ -2,6 +2,7 @@ package ca.taglab.vocabnomad.olm;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.View;
 
 import ca.taglab.vocabnomad.db.Contract;
 import ca.taglab.vocabnomad.widgets.CardListFragment;
@@ -29,6 +30,16 @@ public class FavouriteWordsFragment extends CardListFragment {
     @Override
     public String getTextColumnName() {
         return Contract.View.ENTRY;
+    }
+
+    @Override
+    public View.OnClickListener getItemClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: something
+            }
+        };
     }
 
 
