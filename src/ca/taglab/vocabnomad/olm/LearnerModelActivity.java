@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.widget.Toast;
@@ -83,11 +82,6 @@ public class LearnerModelActivity extends FragmentActivity {
     }
 
 
-    public void selected() {
-        Toast.makeText(this, "Helllloooo", Toast.LENGTH_SHORT).show();
-    }
-
-
     class LearnerModelAdapter extends FragmentStatePagerAdapter {
 
         public LearnerModelAdapter(FragmentManager fm) {
@@ -104,6 +98,7 @@ public class LearnerModelActivity extends FragmentActivity {
                     break;
 
                 case 1:
+                    fragment = TagDetailsFragment.newInstance("alcoholic");
                     //fragment = new OverviewFragment();
                     break;
 
@@ -119,7 +114,7 @@ public class LearnerModelActivity extends FragmentActivity {
 
         @Override
         public int getCount() {
-            return 1;
+            return 2;
         }
 
         @Override
