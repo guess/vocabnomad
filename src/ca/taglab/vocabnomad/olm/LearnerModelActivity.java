@@ -98,7 +98,6 @@ public class LearnerModelActivity extends FragmentActivity {
                     break;
 
                 case 1:
-                    fragment = TagDetailsFragment.newInstance("alcoholic");
                     //fragment = new OverviewFragment();
                     break;
 
@@ -114,7 +113,7 @@ public class LearnerModelActivity extends FragmentActivity {
 
         @Override
         public int getCount() {
-            return 2;
+            return 1;
         }
 
         @Override

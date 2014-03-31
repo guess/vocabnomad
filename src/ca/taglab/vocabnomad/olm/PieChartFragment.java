@@ -1,16 +1,14 @@
 package ca.taglab.vocabnomad.olm;
 
-import android.content.DialogInterface;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
@@ -20,9 +18,6 @@ import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 
 import ca.taglab.vocabnomad.R;
-import ca.taglab.vocabnomad.db.Contract;
-import ca.taglab.vocabnomad.db.DatabaseHelper;
-import ca.taglab.vocabnomad.db.UserEvents;
 
 public class PieChartFragment extends Fragment {
 
@@ -138,12 +133,16 @@ public class PieChartFragment extends Fragment {
         protected Void doInBackground(Void... voids) {
             this.reading = UserStats.getCount(getActivity(),
                     UserStats.getSelection(UserStats.READING_ACTIONS));
+            Log.i("PIE", "READING: " + reading);
             this.writing = UserStats.getCount(getActivity(),
                     UserStats.getSelection(UserStats.WRITING_ACTIONS));
+            Log.i("PIE", "WRITING: " + writing);
             this.speaking = UserStats.getCount(getActivity(),
                     UserStats.getSelection(UserStats.SPEAKING_ACTIONS));
+            Log.i("PIE", "SPEAKING: " + speaking);
             this.listening = UserStats.getCount(getActivity(),
                     UserStats.getSelection(UserStats.LISTENING_ACTIONS));
+            Log.i("PIE", "LISTENING: " + listening);
             return null;
         }
 
