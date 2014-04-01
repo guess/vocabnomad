@@ -30,10 +30,10 @@ public class PieChartFragment extends Fragment {
 
     /** Colors to be used for the pie slices. */
     private static int[] COLORS = new int[] {
-            Color.parseColor("#8DEEEE"),    // blue     read
-            Color.parseColor("#49E20E"),    // green    write
-            Color.parseColor("#FF4500"),    // red      speak
-            Color.parseColor("#EE7AE9")     // purple   listen
+            Color.parseColor("#C08DEEEE"),    // blue     read    8DEEEE
+            Color.parseColor("#C049E20E"),    // green    write   49E20E
+            Color.parseColor("#C0FF4500"),    // red      speak   FF4500
+            Color.parseColor("#C0EE7AE9")     // purple   listen  EE7AE9
     };
 
     /** The main series that will include all the data. */
@@ -60,6 +60,9 @@ public class PieChartFragment extends Fragment {
             mRenderer.setZoomEnabled(false);
             mRenderer.setShowLegend(false);
             mRenderer.setShowLabels(false);
+            mRenderer.setLabelsColor(getResources().getColor(R.color.black));
+            mRenderer.setLabelsTextSize(30);
+            mRenderer.setDisplayValues(true);
 
             // Set legend colours
             layout.findViewById(R.id.read).setBackgroundColor(COLORS[READ]);
@@ -70,6 +73,15 @@ public class PieChartFragment extends Fragment {
             layout.findViewById(R.id.speak).setOnClickListener(new SkillSelected());
             layout.findViewById(R.id.listen).setBackgroundColor(COLORS[LISTEN]);
             layout.findViewById(R.id.listen).setOnClickListener(new SkillSelected());
+
+            layout.findViewById(R.id.pie_chart_card).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    unselectAll();
+                }
+            });
+
+            new SetValues().execute();
         }
         return layout;
     }
@@ -102,47 +114,34 @@ public class PieChartFragment extends Fragment {
         mChartView.repaint();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (mChartView != null) {
-            mChartView.repaint();
-            mChartView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    SeriesSelection seriesSelection = mChartView.getCurrentSeriesAndPoint();
-                    if (seriesSelection == null) {
-                        for (int i = 0; i < mSeries.getItemCount(); i++) {
-                            mRenderer.getSeriesRendererAt(i).setHighlighted(false);
-                        }
-                        mChartView.repaint();
-                    } else {
-                        skillSelected(seriesSelection.getPointIndex());
-                    }
-                }
-            });
+    public void unselectAll() {
+        for (int i = 0; i < mSeries.getItemCount(); i++) {
+            mRenderer.getSeriesRendererAt(i).setHighlighted(false);
         }
-        new SetValues().execute();
+        mChartView.repaint();
     }
 
 
     class SetValues extends AsyncTask<Void, Void, Void> {
-        private long reading = 0, writing = 0, speaking = 0, listening = 0;
+        private double reading = 0, writing = 0, speaking = 0, listening = 0;
 
         @Override
         protected Void doInBackground(Void... voids) {
             this.reading = UserStats.getCount(getActivity(),
                     UserStats.getSelection(UserStats.READING_ACTIONS));
-            Log.i("PIE", "READING: " + reading);
             this.writing = UserStats.getCount(getActivity(),
                     UserStats.getSelection(UserStats.WRITING_ACTIONS));
-            Log.i("PIE", "WRITING: " + writing);
             this.speaking = UserStats.getCount(getActivity(),
                     UserStats.getSelection(UserStats.SPEAKING_ACTIONS));
-            Log.i("PIE", "SPEAKING: " + speaking);
             this.listening = UserStats.getCount(getActivity(),
                     UserStats.getSelection(UserStats.LISTENING_ACTIONS));
-            Log.i("PIE", "LISTENING: " + listening);
+
+            double total = reading + writing + speaking + listening;
+            reading = Math.round((Double) (reading / total) * 100);
+            writing = Math.round((Double) (writing / total) * 100);
+            listening = Math.round((Double) (listening / total) * 100);
+            speaking = Math.round((Double) (speaking / total) * 100);
+
             return null;
         }
 
@@ -169,8 +168,21 @@ public class PieChartFragment extends Fragment {
                 SimpleSeriesRenderer renderer = new SimpleSeriesRenderer();
                 renderer.setColor(COLORS[i % COLORS.length]);
                 mRenderer.addSeriesRenderer(renderer);
-                mChartView.repaint();
             }
+
+            mChartView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    SeriesSelection seriesSelection = mChartView.getCurrentSeriesAndPoint();
+                    if (seriesSelection == null) {
+                        unselectAll();
+                    } else {
+                        skillSelected(seriesSelection.getPointIndex());
+                    }
+                }
+            });
+
+            mChartView.repaint();
         }
     }
 

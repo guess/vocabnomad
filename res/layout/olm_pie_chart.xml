@@ -1,67 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:vocabnomad="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/pie_chart_card" style="@style/Card" >
 
-    <LinearLayout
+    <ca.taglab.vocabnomad.widgets.TypefacedTextView
+        style="@style/Text.Title"
+        android:paddingLeft="12dp"
+        android:text="How you learned (%)" />
+
+    <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/white" android:orientation="vertical" >
+        android:layout_height="wrap_content" android:orientation="horizontal"
+        android:layout_marginTop="0dp" android:layout_marginBottom="0dp">
 
         <LinearLayout android:id="@+id/chart" android:orientation="horizontal"
-            android:layout_width="fill_parent" android:layout_height="485dp"
-            android:layout_marginTop="-85dp" android:layout_marginBottom="-8dp" />
+            android:layout_width="fill_parent" android:layout_height="350dp"
+            android:layout_marginTop="-30dp" android:layout_marginBottom="-30dp"
+            android:layout_marginLeft="-85dp" />
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="-75dp">
+            android:orientation="vertical"
+            android:gravity="right"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="15dp">
 
             <ImageView
                 android:id="@+id/read"
-                android:layout_height="70dp"
-                android:layout_width="0dip"
-                android:layout_weight="1"
-                android:padding="8dp"
+                android:layout_height="52dp"
+                android:layout_width="52dp"
+                android:padding="6dp"
+                android:layout_margin="4dp"
                 android:src="@drawable/read"/>
 
             <ImageView
                 android:id="@+id/write"
-                android:layout_height="70dp"
-                android:layout_width="0dip"
-                android:layout_weight="1"
-                android:padding="8dp"
+                android:layout_height="52dp"
+                android:layout_width="52dp"
+                android:padding="4dp"
+                android:layout_margin="4dp"
                 android:src="@drawable/write"/>
 
             <ImageView
                 android:id="@+id/listen"
-                android:layout_height="70dp"
-                android:layout_width="0dip"
-                android:layout_weight="1"
-                android:padding="8dp"
+                android:layout_height="52dp"
+                android:layout_width="52dp"
+                android:padding="4dp"
+                android:layout_margin="4dp"
                 android:src="@drawable/listen"/>
 
             <ImageView
                 android:id="@+id/speak"
-                android:layout_height="70dp"
-                android:layout_width="0dip"
-                android:layout_weight="1"
-                android:padding="8dp"
+                android:layout_height="52dp"
+                android:layout_width="52dp"
+                android:padding="4dp"
+                android:layout_margin="4dp"
                 android:src="@drawable/speak"/>
 
         </LinearLayout>
 
-    </LinearLayout>
+    </FrameLayout>
 
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="5dip"
-        android:background="@drawable/drop_shadow"
-        android:layout_marginTop="-5dp"
-        >
-    </View>
+    <include layout="@layout/card_shaddow" />
 
 </LinearLayout>
