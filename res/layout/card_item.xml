@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Card"
+    android:layout_height="wrap_content"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:layout_margin="0dp"
+    android:background="@android:color/transparent">
+
+    <include layout="@layout/card_header" />
+
+    <ca.taglab.vocabnomad.widgets.TypefacedTextView android:id="@+id/body"
+        style="@style/Text.Medium" android:visibility="gone" />
+
+    <include layout="@layout/card_shaddow" />
+
+</LinearLayout>
