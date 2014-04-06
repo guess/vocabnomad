@@ -75,7 +75,7 @@
 
         <!--activity android:name=".olm.AddGoalActivity"
             android:parentActivityName=".olm.LearnerModelActivity"
-            android:label="@string/tag" /-->
+            android:label="@string/add_goal" /-->
 
         <activity android:name=".auth.LoginActivity"
                   android:label="@string/login" />

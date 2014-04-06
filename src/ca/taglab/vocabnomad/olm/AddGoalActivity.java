@@ -3,19 +3,18 @@ package ca.taglab.vocabnomad.olm;
 
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
-import android.widget.FilterQueryProvider;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.SimpleCursorAdapter;
@@ -35,6 +34,7 @@ public class AddGoalActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.olm_add_goal);
 
+        // TODO: Remove this when adding to the application (only for testing purposes)
         try {
             DatabaseHelper.getInstance(this).open();
             UserManager.login(this);
@@ -42,6 +42,18 @@ public class AddGoalActivity extends ListActivity {
             e.printStackTrace();
         }
 
+        /* Create the list */
+        ListAdapter adapter = new GoalAdapter(
+                this,
+                R.layout.card_item,
+                null,
+                new String[] { Contract.Tag.NAME },
+                new int[] { R.id.title },
+                0
+        );
+        setListAdapter(adapter);
+
+        /* Filter the list based on the search query */
         ((EditText) findViewById(R.id.goal)).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -58,18 +70,22 @@ public class AddGoalActivity extends ListActivity {
 
             }
         });
+
+        /* Go to the detailed tag view when clicking on a list item */
+        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
+                TextView item = (TextView) view.findViewById(R.id.title);
+                if (item != null && item.getText() != null) {
+                    Intent intent = new Intent(AddGoalActivity.this, TagDetailsActivity.class);
+                    intent.putExtra(TagDetailsActivity.TAG_NAME, item.getText().toString());
+                    startActivity(intent);
+                }
+            }
+        });
+
+        /* Initially fill the list with nothing but macro-skills */
         setMacroSkills();
-
-        ListAdapter adapter = new GoalAdapter(
-                this,
-                R.layout.card_item,
-                null,
-                new String[] { Contract.Tag.NAME },
-                new int[] { R.id.title },
-                0
-        );
-
-        setListAdapter(adapter);
         new SearchGoals().execute("");
     }
 
@@ -129,6 +145,9 @@ public class AddGoalActivity extends ListActivity {
     }
 
 
+    /**
+     * Adapter to display the different goals.
+     */
     class GoalAdapter extends SimpleCursorAdapter {
 
         public GoalAdapter(Context context, int layout, Cursor c, String[] from, int[] to, int flags) {
@@ -140,5 +159,7 @@ public class AddGoalActivity extends ListActivity {
             ((ImageView) view.findViewById(R.id.image)).setImageResource(R.drawable.tag_normal);
             super.bindView(view, context, cursor);
         }
+
+
     }
 }
