@@ -141,6 +141,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+    public void createGoals() {
+        try {
+            Contract.Goals.onCreate(database);
+        } catch (Exception e) {
+            // The table already exists. Do nothing.
+        }
+    }
+
+    public void deleteGoals() {
+        try {
+            Contract.Goals.onDestroy(database);
+        } catch (Exception e) {
+            // The table already exists. Do nothing.
+        }
+    }
+
+
     /**
      * Execute a query and return a cursor with results.
      */

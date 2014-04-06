@@ -923,4 +923,166 @@ public final class Contract {
     }
 
 
+    /**
+     *  Database schema for a goal
+     */
+    public static final class Goals implements BaseColumns {
+
+        public static final String CREATE_TABLE =
+                "CREATE TABLE " + Goals.TABLE + " ("
+                + Goals.GOAL_ID + " INTEGER PRIMARY KEY, "
+                + Goals.GOAL_NAME + " TEXT, "
+                + Goals.COMPLETED + " FLOAT NOT NULL DEFAULT 0, "
+                + Goals.DELETED + " INTEGER NOT NULL DEFAULT 0, "
+                + Goals.ACTIVE + " INTEGER NOT NULL DEFAULT 0, "
+                + Goals.PROGRESS + " INTEGER, "
+                + Goals.TOTAL + " INTEGER, "
+                + Goals.LEVEL + " INTEGER NOT NULL DEFAULT 1, "
+                + Goals.USER_ID + " INTEGER NOT NULL"
+                + ");";
+
+        public static final String DROP_TABLE =
+                "DROP TABLE IF EXISTS " + Goals.TABLE;
+
+        public static void onCreate(SQLiteDatabase db) {
+            Log.w(Goals.class.getName(), "Creating database");
+            db.execSQL(Goals.CREATE_TABLE);
+        }
+
+        public static void onDestroy(SQLiteDatabase db) {
+            Log.w(Goals.class.getName(), "Deleting database");
+            db.execSQL(Goals.DROP_TABLE);
+        }
+
+        public static final String[] PROJECTION = {
+                Goals.GOAL_ID,
+                Goals.GOAL_NAME,
+                Goals.COMPLETED,
+                Goals.DELETED,
+                Goals.ACTIVE,
+                Goals.PROGRESS,
+                Goals.TOTAL,
+                Goals.LEVEL,
+                Goals.USER_ID
+        };
+
+        /**
+         * Goals table name.
+         */
+        public static final String TABLE = "goals";
+
+        /**
+         *  The device ID for a tag.
+         */
+        public static final String GOAL_ID = "goal_id";
+
+        /**
+         *  The name of the goal. Can be the name of a tag/category/topic or the name of a
+         *  macro-skill (i.e., reading, writing, speaking, listening).
+         */
+        public static final String GOAL_NAME = "name";
+
+        /**
+         *  Ratio of the number completed = total / expired
+         */
+        public static final String COMPLETED = "completed";
+
+        /**
+         *  Boolean flag that determines if a goal has been deleted.
+         */
+        public static final String DELETED = "deleted";
+
+        /**
+         *  Boolean flag that determines if this is an active goal being worked on.
+         */
+        public static final String ACTIVE = "active";
+
+        /**
+         *  The progress that has been made to complete the goal.
+         */
+        public static final String PROGRESS = "progress";
+
+        /**
+         *  The progress needed to complete the goal.
+         */
+        public static final String TOTAL = "total";
+
+        /**
+         *  The level of the goal (i.e., number of iterations)
+         */
+        public static final String LEVEL = "level";
+
+        /**
+         *  The user ID of the learner who set this goal.
+         */
+        public static final String USER_ID = "userid";
+
+    }
+
+
+    /**
+     *  The estimated level of knowledge a learner has for a particular vocabulary entry.
+     *  Vocabulary is currently only added to this table when their associated tags are a 'goal'.
+     */
+    public static final class VocabLevel implements BaseColumns {
+
+        public static final String CREATE_TABLE =
+                "CREATE TABLE " + VocabLevel.TABLE + " ("
+                        + VocabLevel.WORD_ID + " INTEGER PRIMARY KEY, "
+                        + VocabLevel.LEVEL + " INTEGER NOT NULL DEFAULT 0, "
+                        + VocabLevel.FORGET_DATE + " INTEGER NOT NULL DEFAULT 0, "
+                        + VocabLevel.INTERVAL_LENGTH + " REAL NOT NULL DEFAULT 0, "
+                        + VocabLevel.EF + " REAL NOT NULL DEFAULT 1.8"
+                        + VocabLevel.USER_ID + " INTEGER NOT NULL"
+                        + ");";
+
+        public static void onCreate(SQLiteDatabase db) {
+            Log.w(VocabLevel.class.getName(), "Creating database");
+            db.execSQL(VocabLevel.CREATE_TABLE);
+        }
+
+        /**
+         * VocabLevel table name.
+         */
+        public static final String TABLE = "VocabLevel";
+
+        /**
+         *  Device ID of a vocabulary entry.
+         */
+        public static final String WORD_ID = "word_id";
+
+        /**
+         *  The date (time in seconds) that learners are expected to forget this vocabulary entry.
+         */
+        public static final String FORGET_DATE = "forget_date";
+
+        /**
+         *  The number of intervals the learner has gone through.
+         *  The level increments when they are exposed to an entry after the 'forget date'
+         */
+        public static final String LEVEL = "level";
+
+        /**
+         *  The easiness factor of a vocabulary entry. This can be dynamically changed based
+         *  on quizzing learners. Harder entries will have a lower EF and easier ones will
+         *  have a higher EF. Should be a float in between 1.1 and 2.5
+         *
+         *  For now, the default is set in the middle at 1.8
+         */
+        public static final String EF = "ef";
+
+        /**
+         *  The total number of days this level lasts for (i.e., until the new 'forget date')
+         *  IL(level) = IL(level-1) * EF
+         */
+        public static final String INTERVAL_LENGTH = "interval";
+
+        /**
+         *  The user ID of the learner's vocab level.
+         */
+        public static final String USER_ID = "userid";
+
+    }
+
+
 }
