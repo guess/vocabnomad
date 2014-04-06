@@ -1032,14 +1032,31 @@ public final class Contract {
                         + VocabLevel.LEVEL + " INTEGER NOT NULL DEFAULT 0, "
                         + VocabLevel.FORGET_DATE + " INTEGER NOT NULL DEFAULT 0, "
                         + VocabLevel.INTERVAL_LENGTH + " REAL NOT NULL DEFAULT 0, "
-                        + VocabLevel.EF + " REAL NOT NULL DEFAULT 1.8"
+                        + VocabLevel.EF + " REAL NOT NULL DEFAULT 1.8, "
                         + VocabLevel.USER_ID + " INTEGER NOT NULL"
                         + ");";
+
+        public static final String DROP_TABLE =
+                "DROP TABLE IF EXISTS " + VocabLevel.TABLE;
 
         public static void onCreate(SQLiteDatabase db) {
             Log.w(VocabLevel.class.getName(), "Creating database");
             db.execSQL(VocabLevel.CREATE_TABLE);
         }
+
+        public static void onDestroy(SQLiteDatabase db) {
+            Log.w(VocabLevel.class.getName(), "Deleting database");
+            db.execSQL(VocabLevel.DROP_TABLE);
+        }
+
+        public static final String[] PROJECTION = {
+                VocabLevel.WORD_ID,
+                VocabLevel.LEVEL,
+                VocabLevel.FORGET_DATE,
+                VocabLevel.INTERVAL_LENGTH,
+                VocabLevel.EF,
+                VocabLevel.USER_ID
+        };
 
         /**
          * VocabLevel table name.

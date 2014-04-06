@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
-import android.util.Log;
 
 import ca.taglab.vocabnomad.auth.UserManager;
 import ca.taglab.vocabnomad.db.Contract;
@@ -101,9 +100,9 @@ public class Goal {
             db.update(Contract.Goals.TABLE, values, selection, null);
         }
 
-        // TODO: Should updating the progress go here? Or should it go before drawing the view?
+        // TODO: Should updating the progress go here? Or should it only go before drawing the view?
         // Update the current progress of the goal
-        // TODO: Goal.updateProgress(context);
+        Goal.updateProgress(context);
     }
 
 
@@ -214,26 +213,7 @@ public class Goal {
     private static void updateProgress(Context context, String goal, int level) {
         DatabaseHelper db = DatabaseHelper.getInstance(context);
 
-        // Get all of the vocabulary with the tag name = goal
-        String vocabulary =
-                "SELECT " + Contract.View.WORD_ID + " "
-                + "FROM " + Contract.View.TABLE + " "
-                + "WHERE " + Contract.View.NAME + "=?";
-
-        // Get all of the vocabulary from above with level >= goal level
-        // Join the above table with VocabLevel on VocabLevel.WORD_ID = View.WORD_ID
-        // where VocabLevel.LEVEL >= level
-        String join =
-                "SELECT vocabulary." + Contract.View.WORD_ID + " "
-                + "FROM (" + vocabulary + ") AS vocabulary "
-                + "INNER JOIN " + Contract.VocabLevel.TABLE + " "
-                + "ON vocabulary." + Contract.View.WORD_ID + "="
-                + Contract.VocabLevel.TABLE + "." + Contract.VocabLevel.WORD_ID + " "
-                + "HAVING " + Contract.VocabLevel.LEVEL + ">=" + level;
-
-        Log.i("Goal", join);
-
-        Cursor cursor = db.rawQuery(join, new String[] { goal });
+        Cursor cursor = VocabLevel.getVocabAtMinLevel(context, level, goal);
 
         long progress = 0;
         if (cursor != null) {

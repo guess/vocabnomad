@@ -141,7 +141,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public void createGoals() {
+    public void createGoalTable() {
         try {
             Contract.Goals.onCreate(database);
         } catch (Exception e) {
@@ -149,9 +149,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void deleteGoals() {
+    public void deleteGoalTable() {
         try {
             Contract.Goals.onDestroy(database);
+        } catch (Exception e) {
+            // The table already exists. Do nothing.
+        }
+    }
+
+    public void createVocabLevelTable() {
+        try {
+            Contract.VocabLevel.onCreate(database);
+        } catch (Exception e) {
+            // The table already exists. Do nothing.
+        }
+    }
+
+    public void deleteVocabLevelTable() {
+        try {
+            Contract.VocabLevel.onDestroy(database);
         } catch (Exception e) {
             // The table already exists. Do nothing.
         }
