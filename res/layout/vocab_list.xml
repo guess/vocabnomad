@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ca.taglab.vocabnomad.VocabActivity">
 
-<RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <!-- The main view for the activity -->
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-    <FrameLayout
+        <FrameLayout
             android:id="@+id/bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:visibility="gone">
 
-        <LinearLayout
+            <LinearLayout
                 android:id="@+id/filter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -24,7 +31,7 @@
                 android:paddingBottom="4dp"
                 android:background="@drawable/search_bg_expanded" />
 
-        <ImageButton
+            <ImageButton
                 android:id="@+id/clear"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
@@ -33,28 +40,37 @@
                 android:contentDescription="@string/close_filter" />
 
 
-    </FrameLayout>
+        </FrameLayout>
 
-    <LinearLayout
-        android:id="@+id/progress"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:background="@drawable/splash">
+        <LinearLayout
+            android:id="@+id/progress"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:background="@drawable/splash">
 
-        <ProgressBar
+            <ProgressBar
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:gravity="center"
                 android:layout_marginTop="400dp"
                 android:indeterminate="true" />
 
-    </LinearLayout>
+        </LinearLayout>
 
-    <ListView
+        <ListView
             android:id="@android:id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/bar"
             android:groupIndicator="@null" />
 
-</RelativeLayout>
+    </RelativeLayout>
+
+    <!-- The navigation drawer fragment -->
+    <fragment android:id="@+id/navigation_drawer"
+        android:layout_width="@dimen/navigation_drawer_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:name="ca.taglab.vocabnomad.NavigationDrawerFragment"/>
+
+</android.support.v4.widget.DrawerLayout>

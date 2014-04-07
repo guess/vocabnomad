@@ -9,17 +9,22 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import ca.taglab.vocabnomad.BaseActivity;
+import ca.taglab.vocabnomad.NavigationDrawerFragment;
 import ca.taglab.vocabnomad.R;
+import ca.taglab.vocabnomad.VocabActivity;
 import ca.taglab.vocabnomad.auth.UserManager;
 import ca.taglab.vocabnomad.db.Contract;
 import ca.taglab.vocabnomad.db.DatabaseHelper;
 import ca.taglab.vocabnomad.db.UserEvents;
 
-public class LearnerModelActivity extends FragmentActivity {
+public class LearnerModelActivity extends BaseActivity {
     public static final String TAG = "LearnerModelActivity";
 
     ViewPager mViewPager;
@@ -157,25 +162,6 @@ public class LearnerModelActivity extends FragmentActivity {
 
             return super.getPageTitle(position);
         }
-    }
-
-    private long getVocabId(String vocab) {
-        long id = 0;
-        Cursor cursor = getContentResolver().query(
-                Contract.Word.getUri(),
-                Contract.Word.PROJECTION,
-                Contract.Word.ENTRY + "=?",
-                new String[]{vocab},
-                null, null
-        );
-
-        if (cursor != null) {
-            cursor.moveToFirst();
-            id = cursor.getLong(cursor.getColumnIndex(Contract.Word._ID));
-            cursor.close();
-        }
-
-        return id;
     }
 
 }

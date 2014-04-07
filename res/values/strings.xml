@@ -48,5 +48,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_goal">Add goal</string>
     <string name="type_goal">Select skill or search topic</string>
+    <string name="stats">Statistics</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
 </resources>

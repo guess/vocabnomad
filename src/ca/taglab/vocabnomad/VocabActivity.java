@@ -1,6 +1,7 @@
 package ca.taglab.vocabnomad;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.ListActivity;
 import android.content.AsyncQueryHandler;
 import android.content.Context;
@@ -33,7 +34,7 @@ import ca.taglab.vocabnomad.db.UserEvents;
 import ca.taglab.vocabnomad.rest.DataSyncRestService;
 import ca.taglab.vocabnomad.rest.RestService;
 
-public class VocabActivity extends ListActivity implements
+public class VocabActivity extends BaseActivity implements
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener,
         LocationListener {
@@ -59,6 +60,8 @@ public class VocabActivity extends ListActivity implements
 
     // Google Play Services location client
     private LocationClient mLocationClient;
+
+    private ListView mListView;
 
 
     public static final int USER_LOGIN = 1;
@@ -204,6 +207,8 @@ public class VocabActivity extends ListActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.vocab_list);
 
+        mListView = (ListView) findViewById(android.R.id.list);
+
         mProgress = (ViewGroup) findViewById(R.id.progress);
         final Context context = this;
         findViewById(R.id.clear).setOnClickListener(new View.OnClickListener() {
@@ -229,10 +234,19 @@ public class VocabActivity extends ListActivity implements
         // Initialize the databases
         init();
 
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Intent intent = new Intent(VocabActivity.this, ViewWordActivity.class);
+                intent.putExtra("id", id);
+                startActivityForResult(intent, VIEW_WORD);
+            }
+        });
+
         // Populate the vocabulary list
         mAdapter = new VocabAdapter(this, null, 0, filterHandler);
         mQueryHandler = new QueryHandler(this, mAdapter);
-        setListAdapter(mAdapter);
+        mListView.setAdapter(mAdapter);
         resetVocabList();
     }
 
@@ -345,14 +359,6 @@ public class VocabActivity extends ListActivity implements
     }
 
     @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-        Intent intent = new Intent(this, ViewWordActivity.class);
-        intent.putExtra("id", id);
-        startActivityForResult(intent, VIEW_WORD);
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -424,7 +430,7 @@ public class VocabActivity extends ListActivity implements
      */
     private void showProgressBar() {
         mProgress.setVisibility(View.VISIBLE);
-        getListView().setVisibility(View.GONE);
+        mListView.setVisibility(View.GONE);
     }
 
     /**
@@ -435,7 +441,7 @@ public class VocabActivity extends ListActivity implements
         getActionBar().show();
         mProgress.setBackground(null);
         mProgress.setVisibility(View.GONE);
-        getListView().setVisibility(View.VISIBLE);
+        mListView.setVisibility(View.VISIBLE);
     }
 
 
