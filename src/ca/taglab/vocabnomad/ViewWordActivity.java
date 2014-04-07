@@ -22,6 +22,8 @@ import android.view.*;
 import android.widget.*;
 import ca.taglab.vocabnomad.db.Contract;
 import ca.taglab.vocabnomad.db.UserEvents;
+import ca.taglab.vocabnomad.types.Goal;
+import ca.taglab.vocabnomad.types.VocabLevel;
 import ca.taglab.vocabnomad.types.Word;
 
 import java.io.File;
@@ -242,6 +244,7 @@ public class ViewWordActivity extends Activity implements TextToSpeech.OnInitLis
 
     public void refreshView() {
         long id = getIntent().getExtras().getLong("id");
+        new GetPoints().execute(id);
         word = new Word();
         word.refresh(ContentUris.withAppendedId(Contract.Word.getUri(), id), getContentResolver());
 
@@ -485,7 +488,6 @@ public class ViewWordActivity extends Activity implements TextToSpeech.OnInitLis
         new SaveVoiceClip().execute(word.getId());
     }
 
-
     class GetVoiceClip extends AsyncTask<Long, Void, String> {
 
         @Override
@@ -541,5 +543,21 @@ public class ViewWordActivity extends Activity implements TextToSpeech.OnInitLis
         }
     }
 
+    class GetPoints extends AsyncTask<Long, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Long... ids) {
+            long id = ids[0];
+
+            if (Goal.isVocabInActiveGoal(ViewWordActivity.this, id)) {
+                if (VocabLevel.hasPassedForgetDate(ViewWordActivity.this, id)) {
+                    VocabLevel.levelUp(ViewWordActivity.this, id);
+                }
+            }
+
+            return null;
+        }
+
+    }
 
 }
