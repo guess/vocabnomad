@@ -1,5 +1,6 @@
 package ca.taglab.vocabnomad.olm;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -47,11 +48,17 @@ public class RelatedTagsFragment extends CardListFragment {
 
     @Override
     public View.OnClickListener getItemClickListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Do nothing
-            }
-        };
+        return new ItemClick();
+    }
+
+    class ItemClick implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            String tag = (String) view.getTag();
+            Intent intent = new Intent(getActivity(), TagDetailsActivity.class);
+            intent.putExtra(TagDetailsActivity.TAG_NAME, tag);
+            startActivity(intent);
+        }
     }
 }

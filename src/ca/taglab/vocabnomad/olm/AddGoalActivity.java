@@ -36,7 +36,11 @@ public class AddGoalActivity extends ListActivity {
 
         // TODO: Remove this when adding to the application (only for testing purposes)
         try {
-            DatabaseHelper.getInstance(this).open();
+            //DatabaseHelper.getInstance(this).open();
+            DatabaseHelper db = DatabaseHelper.getInstance(this);
+            db.open();
+            db.createGoalTable();
+            db.createVocabLevelTable();
             UserManager.login(this);
         } catch (IOException e) {
             e.printStackTrace();
@@ -157,6 +161,7 @@ public class AddGoalActivity extends ListActivity {
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
             ((ImageView) view.findViewById(R.id.image)).setImageResource(R.drawable.tag_normal);
+            view.findViewById(R.id.header).setBackgroundResource(R.drawable.white_clickable);
             super.bindView(view, context, cursor);
         }
 

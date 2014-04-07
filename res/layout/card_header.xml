@@ -12,7 +12,6 @@
         android:layout_height="70dp"
         android:layout_weight="1"
         android:padding="8dp"
-        android:src="@drawable/read"
         android:contentDescription="@string/skill"/>
 
     <ca.taglab.vocabnomad.widgets.TypefacedTextView android:id="@+id/title"

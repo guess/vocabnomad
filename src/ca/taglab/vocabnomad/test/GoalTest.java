@@ -22,8 +22,8 @@ public class GoalTest extends AndroidTestCase {
     protected void setUp() throws Exception {
         db = DatabaseHelper.getInstance(getContext());
         db.open();
-        db.deleteGoals();
-        db.createGoals();
+        db.deleteGoalTable();
+        db.createGoalTable();
 
         UserManager.login(getContext());
     }

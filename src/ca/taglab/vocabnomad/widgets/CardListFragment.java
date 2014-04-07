@@ -36,6 +36,9 @@ public abstract class CardListFragment extends Fragment {
 
     private ViewGroup mList;
 
+    // The whole CardList layout
+    private View layout;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +52,7 @@ public abstract class CardListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View layout = inflater.inflate(R.layout.widget_card_list, container, false);
+        layout = inflater.inflate(R.layout.widget_card_list, container, false);
 
         if (layout != null) {
             ((TextView) layout.findViewById(R.id.title)).setText(mTitle);
@@ -99,6 +102,7 @@ public abstract class CardListFragment extends Fragment {
                         final ViewGroup newView = (ViewGroup) LayoutInflater.from(getActivity())
                                 .inflate(R.layout.widget_card_list_item, mList, false);
                         if (newView != null && getTextColumnName() != null) {
+                            newView.setBackgroundResource(R.drawable.white_clickable);
                             String text = cursor.getString(cursor.getColumnIndex(getTextColumnName()));
                             if (!TextUtils.isEmpty(text)) {
                                 ((TypefacedTextView) newView.findViewById(R.id.text)).setText(text);
@@ -109,6 +113,9 @@ public abstract class CardListFragment extends Fragment {
                         }
                         cursor.moveToNext();
                     }
+                } else {
+                    // TODO: There are no items in the list, hide the whole view
+                    // layout.setVisibility(View.GONE);
                 }
                 cursor.close();
             }
