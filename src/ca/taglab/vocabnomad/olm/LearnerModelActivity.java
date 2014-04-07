@@ -1,6 +1,8 @@
 package ca.taglab.vocabnomad.olm;
 
 import android.app.ActionBar;
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -8,10 +10,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.widget.Toast;
-
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import ca.taglab.vocabnomad.R;
 import ca.taglab.vocabnomad.auth.UserManager;
+import ca.taglab.vocabnomad.db.Contract;
 import ca.taglab.vocabnomad.db.DatabaseHelper;
 import ca.taglab.vocabnomad.db.UserEvents;
 
@@ -50,10 +54,32 @@ public class LearnerModelActivity extends FragmentActivity {
         createTabs();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.olm_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+
+            case R.id.menu_search:
+                startActivity(new Intent(this, SearchGoalActivity.class));
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 
     private void createTabs() {
         final ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.search_bg));
+        actionBar.setTitle("");
 
         // Create a tab listener that is called when the user changes tabs.
         ActionBar.TabListener tabListener = new ActionBar.TabListener() {
@@ -98,7 +124,7 @@ public class LearnerModelActivity extends FragmentActivity {
                     break;
 
                 case 1:
-                    //fragment = new OverviewFragment();
+                    fragment = new GoalsListFragment();
                     break;
 
                 case 2:
@@ -113,7 +139,7 @@ public class LearnerModelActivity extends FragmentActivity {
 
         @Override
         public int getCount() {
-            return 1;
+            return 2;
         }
 
         @Override
@@ -131,6 +157,25 @@ public class LearnerModelActivity extends FragmentActivity {
 
             return super.getPageTitle(position);
         }
+    }
+
+    private long getVocabId(String vocab) {
+        long id = 0;
+        Cursor cursor = getContentResolver().query(
+                Contract.Word.getUri(),
+                Contract.Word.PROJECTION,
+                Contract.Word.ENTRY + "=?",
+                new String[]{vocab},
+                null, null
+        );
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            id = cursor.getLong(cursor.getColumnIndex(Contract.Word._ID));
+            cursor.close();
+        }
+
+        return id;
     }
 
 }

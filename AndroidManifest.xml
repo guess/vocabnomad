@@ -51,31 +51,31 @@
             </intent-filter>
         </activity-->
 
-        <!--activity android:name=".olm.LearnerModelActivity"
+        <activity android:name=".olm.LearnerModelActivity"
                   android:label="@string/app_name"
                   android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-        </activity-->
+        </activity>
 
-        <activity android:name=".olm.AddGoalActivity"
+        <!--activity android:name=".olm.SearchGoalActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-        </activity>
+        </activity-->
 
         <activity android:name=".olm.TagDetailsActivity"
             android:parentActivityName=".olm.LearnerModelActivity"
             android:label="@string/tag" />
 
-        <!--activity android:name=".olm.AddGoalActivity"
+        <activity android:name=".olm.SearchGoalActivity"
             android:parentActivityName=".olm.LearnerModelActivity"
-            android:label="@string/add_goal" /-->
+            android:label="@string/add_goal" />
 
         <activity android:name=".auth.LoginActivity"
                   android:label="@string/login" />

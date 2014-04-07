@@ -27,24 +27,12 @@ import ca.taglab.vocabnomad.auth.UserManager;
 import ca.taglab.vocabnomad.db.Contract;
 import ca.taglab.vocabnomad.db.DatabaseHelper;
 
-public class AddGoalActivity extends ListActivity {
+public class SearchGoalActivity extends ListActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.olm_add_goal);
-
-        // TODO: Remove this when adding to the application (only for testing purposes)
-        try {
-            //DatabaseHelper.getInstance(this).open();
-            DatabaseHelper db = DatabaseHelper.getInstance(this);
-            db.open();
-            db.createGoalTable();
-            db.createVocabLevelTable();
-            UserManager.login(this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         /* Create the list */
         ListAdapter adapter = new GoalAdapter(
@@ -81,7 +69,7 @@ public class AddGoalActivity extends ListActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
                 TextView item = (TextView) view.findViewById(R.id.title);
                 if (item != null && item.getText() != null) {
-                    Intent intent = new Intent(AddGoalActivity.this, TagDetailsActivity.class);
+                    Intent intent = new Intent(SearchGoalActivity.this, TagDetailsActivity.class);
                     intent.putExtra(TagDetailsActivity.TAG_NAME, item.getText().toString());
                     startActivity(intent);
                 }
