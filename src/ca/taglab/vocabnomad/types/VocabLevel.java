@@ -90,7 +90,8 @@ public class VocabLevel {
         // Increase the forget date based on the new interval length
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
-        c.add(Calendar.DATE, interval);
+        // TODO: Set this back --> c.add(Calendar.DATE, interval);
+        c.add(Calendar.MINUTE, interval);
         values.put(Contract.VocabLevel.FORGET_DATE, c.getTimeInMillis());
 
         db.update(Contract.VocabLevel.TABLE, values, Contract.VocabLevel.WORD_ID + "=?",

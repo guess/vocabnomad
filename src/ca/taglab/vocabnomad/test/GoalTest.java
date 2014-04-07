@@ -24,6 +24,8 @@ public class GoalTest extends AndroidTestCase {
         db.open();
         db.deleteGoalTable();
         db.createGoalTable();
+        db.deleteVocabLevelTable();
+        db.createVocabLevelTable();
 
         UserManager.login(getContext());
     }
@@ -166,6 +168,12 @@ public class GoalTest extends AndroidTestCase {
         // TODO: Implement the VocabLevel database first
     }
 
+    public void testIsVocabInActiveGoal() throws Exception{
+        Goal.addGoal(getContext(), getTagId("beer"), "beer");
+        assertTrue(Goal.isVocabInActiveGoal(getContext(), getVocabId("ales")));
+        assertFalse(Goal.isVocabInActiveGoal(getContext(), getVocabId("7-Up")));
+    }
+
     private long getTagId(String name) {
         Cursor cursor = db.query(
                 Contract.Tag.TABLE,
@@ -180,6 +188,30 @@ public class GoalTest extends AndroidTestCase {
             if (cursor.moveToFirst()) {
                 id = cursor.getLong(cursor.getColumnIndex(Contract.Tag._ID));
             }
+            cursor.close();
+        }
+
+        return id;
+    }
+
+    /**
+     * Get the device ID for a vocabulary entry.
+     * @param vocab The name of the vocabulary entry
+     * @return the device ID for the vocabulary entry.
+     */
+    private long getVocabId(String vocab) {
+        long id = 0;
+        Cursor cursor = getContext().getContentResolver().query(
+                Contract.Word.getUri(),
+                Contract.Word.PROJECTION,
+                Contract.Word.ENTRY + "=?",
+                new String[] { vocab },
+                null, null
+        );
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            id = cursor.getLong(cursor.getColumnIndex(Contract.Word._ID));
             cursor.close();
         }
 

@@ -276,6 +276,40 @@ public class Goal {
     }
 
 
+    public static boolean isVocabInActiveGoal(Context context, long id) {
+        DatabaseHelper db = DatabaseHelper.getInstance(context);
+        boolean isInGoal = false;
+
+        String goals =
+                "SELECT " + Contract.Goals.GOAL_NAME + " "
+                + "FROM " + Contract.Goals.TABLE + " "
+                + "WHERE " + Contract.Goals.DELETED + "=? AND "
+                + Contract.Goals.ACTIVE + "=?";
+
+        String tags =
+                "SELECT " + Contract.View.NAME + " "
+                + "FROM " + Contract.View.TABLE + " "
+                + "WHERE " + Contract.View.WORD_ID + "=?";
+
+        String join =
+                "SELECT " + Contract.Goals.TABLE + "." + Contract.Goals.GOAL_NAME + " "
+                + "FROM (" + goals + ") AS " + Contract.Goals.TABLE + " "
+                + "INNER JOIN (" + tags + ") AS " + Contract.View.TABLE + " "
+                + "ON " + Contract.Goals.TABLE + "." + Contract.Goals.GOAL_NAME + "="
+                + Contract.View.TABLE + "." + Contract.View.NAME;
+
+        Cursor cursor = db.rawQuery(join,
+                new String[] { Long.toString(0), Long.toString(1), Long.toString(id)});
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) isInGoal = true;
+            cursor.close();
+        }
+
+        return isInGoal;
+    }
+
+
     /**
      * Check if the user has exceeded their limit of active goals
      * @param context   Activity or application context.
