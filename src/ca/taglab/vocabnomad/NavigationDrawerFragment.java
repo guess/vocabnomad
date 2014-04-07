@@ -2,6 +2,7 @@ package ca.taglab.vocabnomad;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -95,12 +96,14 @@ public class NavigationDrawerFragment extends Fragment {
         });
         mDrawerListView.setAdapter(new ArrayAdapter<String>(
                 getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1,
+                R.layout.widget_card_list_item,
+                R.id.text,
                 new String[]{
-                        getString(R.string.app_name),
+                        getString(R.string.vocabulary),
                         getString(R.string.stats),
-                }));
+                        getString(R.string.logout),
+                }
+        ));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
     }
@@ -108,6 +111,7 @@ public class NavigationDrawerFragment extends Fragment {
     public boolean isDrawerOpen() {
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
     }
+
 
     /**
      * Users of this fragment must call this method to set up the navigation drawer interactions.
