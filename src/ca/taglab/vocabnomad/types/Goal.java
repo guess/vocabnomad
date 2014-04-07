@@ -33,7 +33,7 @@ public class Goal {
         selection = ADD_CONSTRAINT(selection, Contract.Goals.ACTIVE, 1);
 
         return db.query(Contract.Goals.TABLE, Contract.Goals.PROJECTION, selection,
-                null, null, null, null);
+                null, null, null, Contract.Goals.GOAL_NAME);
     }
 
     /**
