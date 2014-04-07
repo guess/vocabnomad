@@ -138,6 +138,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } catch (Exception e) {
             // The table already exists. Do nothing.
         }
+
+        createGoalTable();
+        createVocabLevelTable();
     }
 
 
