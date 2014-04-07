@@ -1,8 +1,6 @@
 package ca.taglab.vocabnomad;
 
 import android.app.ActionBar;
-import android.app.Activity;
-import android.app.ListActivity;
 import android.content.AsyncQueryHandler;
 import android.content.Context;
 import android.content.Intent;
@@ -196,7 +194,7 @@ public class VocabActivity extends BaseActivity implements
                 case TOKEN_RESET:
                     mAdapter.swapCursor(cursor);
                     mAdapter.notifyDataSetChanged();
-                    ((ListActivity) mContext).getListView().setSelection(0);
+                    ((VocabActivity) mContext).getListView().setSelection(0);
                     break;
             }
         }
@@ -306,6 +304,10 @@ public class VocabActivity extends BaseActivity implements
         resetVocabList(true);
 
         hideProgressBar();
+    }
+
+    public ListView getListView() {
+        return mListView;
     }
 
 
