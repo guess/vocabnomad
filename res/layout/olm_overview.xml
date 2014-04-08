@@ -6,7 +6,7 @@
 
     <LinearLayout android:id="@+id/overview_container"
         android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content" android:paddingTop="5dp">
 
         <!--fragment android:id="@+id/chart"
             android:name="ca.taglab.vocabnomad.olm.PieChartFragment"

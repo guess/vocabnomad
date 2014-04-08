@@ -7,7 +7,7 @@
     <ca.taglab.vocabnomad.widgets.TypefacedTextView
         style="@style/Text.Title"
         android:paddingLeft="12dp"
-        android:text="How you learned (%)" />
+        android:text="Skills used (%)" />
 
     <FrameLayout
         android:layout_width="wrap_content"
