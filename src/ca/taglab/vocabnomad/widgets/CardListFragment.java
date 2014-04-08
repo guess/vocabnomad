@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import ca.taglab.vocabnomad.R;
 
 public abstract class CardListFragment extends Fragment {
@@ -87,15 +89,12 @@ public abstract class CardListFragment extends Fragment {
     /**
      * Fill the list values on a separate thread.
      */
-    class FillList extends AsyncTask<Void, Void, Cursor> {
+    class FillList extends AsyncTask<Void, Void, ArrayList<ViewGroup>> {
         @Override
-        protected Cursor doInBackground(Void... voids) {
-            return getCursor();
-        }
+        protected ArrayList<ViewGroup> doInBackground(Void... voids) {
+            ArrayList<ViewGroup> views = new ArrayList<ViewGroup>();
 
-        @Override
-        protected void onPostExecute(Cursor cursor) {
-
+            Cursor cursor = getCursor();
             if (cursor != null) {
                 if (cursor.moveToFirst()) {
                     for (int i = 0; i < mLimit && !cursor.isAfterLast(); i++) {
@@ -109,7 +108,8 @@ public abstract class CardListFragment extends Fragment {
                                 newView.setTag(text);
                                 newView.setOnClickListener(getItemClickListener());
                             }
-                            mList.addView(newView, i);
+                            //mList.addView(newView, i);
+                            views.add(newView);
                         }
                         cursor.moveToNext();
                     }
@@ -118,6 +118,17 @@ public abstract class CardListFragment extends Fragment {
                     // layout.setVisibility(View.GONE);
                 }
                 cursor.close();
+            }
+
+            //return getCursor();
+
+            return views;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<ViewGroup> views) {
+            for (ViewGroup view : views) {
+                mList.addView(view);
             }
         }
     }

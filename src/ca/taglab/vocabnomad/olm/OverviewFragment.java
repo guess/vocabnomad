@@ -17,10 +17,7 @@ public class OverviewFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View layout = inflater.inflate(R.layout.olm_overview, container, false);
 
-        if (layout != null && layout.findViewById(R.id.fragment_container) != null) {
-            if (savedInstanceState != null) {
-                return layout;
-            }
+        if (layout != null && layout.findViewById(R.id.overview_container) != null) {
 
             PieChartFragment pie = new PieChartFragment();
             MacroSkillFragment read = MacroSkillFragment.newInstance(UserStats.READING);
@@ -29,11 +26,11 @@ public class OverviewFragment extends Fragment {
             MacroSkillFragment speak = MacroSkillFragment.newInstance(UserStats.SPEAKING);
 
             getActivity().getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, pie)
-                    .add(R.id.fragment_container, read)
-                    .add(R.id.fragment_container, write)
-                    .add(R.id.fragment_container, listen)
-                    .add(R.id.fragment_container, speak)
+                    .add(R.id.overview_container, pie)
+                    .add(R.id.overview_container, read)
+                    .add(R.id.overview_container, write)
+                    .add(R.id.overview_container, listen)
+                    .add(R.id.overview_container, speak)
                     .commit();
         }
 
