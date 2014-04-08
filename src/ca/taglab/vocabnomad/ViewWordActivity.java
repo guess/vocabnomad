@@ -543,21 +543,28 @@ public class ViewWordActivity extends Activity implements TextToSpeech.OnInitLis
         }
     }
 
-    class GetPoints extends AsyncTask<Long, Void, Void> {
+    class GetPoints extends AsyncTask<Long, Void, Boolean> {
 
         @Override
-        protected Void doInBackground(Long... ids) {
+        protected Boolean doInBackground(Long... ids) {
             long id = ids[0];
 
             if (Goal.isVocabInActiveGoal(ViewWordActivity.this, id)) {
                 if (VocabLevel.hasPassedForgetDate(ViewWordActivity.this, id)) {
                     VocabLevel.levelUp(ViewWordActivity.this, id);
+                    return true;
                 }
             }
 
-            return null;
+            return false;
         }
 
+        @Override
+        protected void onPostExecute(Boolean gotPoints) {
+            if (gotPoints) {
+                Toast.makeText(ViewWordActivity.this, "+1", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 }

@@ -16,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import ca.taglab.vocabnomad.BaseActivity;
+import ca.taglab.vocabnomad.CompleteGoalsFragment;
 import ca.taglab.vocabnomad.NavigationDrawerFragment;
 import ca.taglab.vocabnomad.R;
 import ca.taglab.vocabnomad.VocabActivity;
@@ -23,6 +24,7 @@ import ca.taglab.vocabnomad.auth.UserManager;
 import ca.taglab.vocabnomad.db.Contract;
 import ca.taglab.vocabnomad.db.DatabaseHelper;
 import ca.taglab.vocabnomad.db.UserEvents;
+import ca.taglab.vocabnomad.types.Goal;
 
 public class LearnerModelActivity extends BaseActivity {
     public static final String TAG = "LearnerModelActivity";
@@ -133,7 +135,7 @@ public class LearnerModelActivity extends BaseActivity {
                     break;
 
                 case 2:
-                    //fragment = new OverviewFragment();
+                    fragment = new CompleteGoalsFragment();
                     break;
             }
 
@@ -144,7 +146,7 @@ public class LearnerModelActivity extends BaseActivity {
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
 
         @Override

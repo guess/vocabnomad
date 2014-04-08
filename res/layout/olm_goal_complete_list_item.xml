@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:vocabnomad="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Card" android:layout_width="175dp">
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        tools:context="ca.taglab.vocabnomad.olm.CategoryTitleFragment">
+
+        <include layout="@layout/tag_category_image" />
+
+        <ca.taglab.vocabnomad.widgets.TypefacedTextView android:id="@+id/title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"
+            android:layout_gravity="bottom"
+            android:padding="8dp"
+            android:textColor="@color/white"
+            vocabnomad:typeface="Roboto-Light.ttf"
+            android:background="@drawable/bg_gradient_text" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ca.taglab.vocabnomad.widgets.TypefacedTextView
+            style="@style/Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="@string/level"/>
+
+        <ca.taglab.vocabnomad.widgets.TypefacedTextView android:id="@+id/level"
+            style="@style/Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ca.taglab.vocabnomad.widgets.TypefacedTextView
+            style="@style/Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="@string/expires"/>
+
+        <ca.taglab.vocabnomad.widgets.TypefacedTextView android:id="@+id/expires"
+            style="@style/Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="-10dp" />
+
+    </LinearLayout>
+
+    <include layout="@layout/card_shaddow" />
+
+
+</LinearLayout>

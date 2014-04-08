@@ -53,5 +53,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="logout">Logout</string>
     <string name="vocabulary">Vocabulary</string>
+    <string name="level">Level:</string>
+    <string name="expires">Expires:</string>
 
 </resources>

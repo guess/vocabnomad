@@ -57,7 +57,7 @@ public class Goal {
         selection = ADD_CONSTRAINT(selection, Contract.Goals.DELETED, 0);
         selection = ADD_CONSTRAINT(selection, Contract.Goals.ACTIVE, 0);
 
-        return db.query(Contract.Goals.TABLE, Contract.Goals.PROJECTION, selection,
+        return db.query(Contract.Goals.TABLE, Contract.Goals.PROJECTION_ID, selection,
                 null, null, null, null);
     }
 

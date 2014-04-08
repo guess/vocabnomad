@@ -966,6 +966,18 @@ public final class Contract {
                 Goals.USER_ID
         };
 
+        public static final String[] PROJECTION_ID = {
+                Goals.GOAL_ID + " AS " + BaseColumns._ID,
+                Goals.GOAL_NAME,
+                Goals.COMPLETED,
+                Goals.DELETED,
+                Goals.ACTIVE,
+                Goals.PROGRESS,
+                Goals.TOTAL,
+                Goals.LEVEL,
+                Goals.USER_ID
+        };
+
         /**
          * Goals table name.
          */
