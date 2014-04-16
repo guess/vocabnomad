@@ -27,6 +27,7 @@ import ca.taglab.vocabnomad.widgets.SimpleCursorLoader;
 
 public class CompleteGoalsFragment extends Fragment {
     private CompletedGoalsAdapter mAdapter;
+    private GoalLoader mLoader;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,7 +39,8 @@ public class CompleteGoalsFragment extends Fragment {
 
             grid.setAdapter(mAdapter);
 
-            new GoalLoader(getActivity()).startLoading();
+            mLoader = new GoalLoader(getActivity());
+            mLoader.startLoading();
         }
         return layout;
     }
@@ -66,6 +68,7 @@ public class CompleteGoalsFragment extends Fragment {
         if (mAdapter.getCursor() != null) {
             mAdapter.getCursor().close();
         }
+        mLoader.reset();
         super.onDestroyView();
     }
 }
