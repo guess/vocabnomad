@@ -418,9 +418,6 @@ public class VocabActivity extends BaseActivity implements
             Log.e(TAG, "An error occurred when opening the VocabNomad database");
         }
 
-        // Initialize the user events
-        UserEvents.init(getApplicationContext());
-
         // Check the if the user is logged in
         UserManager.login(getApplicationContext());
         checkUserLogin();

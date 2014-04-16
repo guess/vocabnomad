@@ -5,21 +5,16 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import ca.taglab.vocabnomad.BaseActivity;
-import ca.taglab.vocabnomad.CompleteGoalsFragment;
-import ca.taglab.vocabnomad.NavigationDrawerFragment;
 import ca.taglab.vocabnomad.R;
-import ca.taglab.vocabnomad.VocabActivity;
 import ca.taglab.vocabnomad.auth.UserManager;
 import ca.taglab.vocabnomad.db.Contract;
 import ca.taglab.vocabnomad.db.DatabaseHelper;
@@ -37,14 +32,14 @@ public class LearnerModelActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.olm_main);
 
-        // TODO: Comment this out when you are not using this as first activity
+        /* TODO: Comment this out when you are not using this as first activity
         try {
             DatabaseHelper.getInstance(getApplicationContext()).open();
         } catch(Exception e) {
             Log.e(TAG, "An error occurred when opening the VocabNomad database");
         }
         UserEvents.init(this);
-        UserManager.login(this);
+        UserManager.login(this); */
 
 
         mAdapter = new LearnerModelAdapter(getSupportFragmentManager());
@@ -164,6 +159,27 @@ public class LearnerModelActivity extends BaseActivity {
 
             return super.getPageTitle(position);
         }
+    }
+
+    private long getTagId(String name) {
+        DatabaseHelper db = DatabaseHelper.getInstance(this);
+        Cursor cursor = db.query(
+                Contract.Tag.TABLE,
+                Contract.Tag.PROJECTION,
+                Contract.Tag.NAME + "=?",
+                new String[] { name },
+                null, null, null
+        );
+
+        long id = 0;
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                id = cursor.getLong(cursor.getColumnIndex(Contract.Tag._ID));
+            }
+            cursor.close();
+        }
+
+        return id;
     }
 
 }

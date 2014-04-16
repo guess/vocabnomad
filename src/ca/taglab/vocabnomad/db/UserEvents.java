@@ -32,55 +32,46 @@ public class UserEvents extends DAO {
 
     private static double longitude = 0, latitude = 0, altitude = 0;
 
-
     /**
      * Initialize the Event Types dictionary with names and IDs.
      * @param context   Application context to access the database
      */
-    public static void init(final Context context) {
+    private static void initUserEvents(Context context) {
+        Cursor cursor;
+        DatabaseHelper db = DatabaseHelper.getInstance(context);
         UserEvents.context = context;
 
-        new Thread(new Runnable() {
+        try {
+            db.open();
 
-            @Override
-            public void run() {
-                Cursor cursor;
-                DatabaseHelper db = DatabaseHelper.getInstance(context);
+            mUserEventIds = new HashMap<String, Long>();
 
-                try {
-                    db.open();
+            cursor = db.query(
+                    Contract.EventTypes.TABLE,
+                    new String[] { Contract.EventTypes.NAME, Contract.EventTypes.ID },
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
 
-                    mUserEventIds = new HashMap<String, Long>();
+            if (cursor != null && cursor.moveToFirst()) {
+                final int mNamePosition = cursor.getColumnIndex(Contract.EventTypes.NAME);
+                final int mIdPosition = cursor.getColumnIndex(Contract.EventTypes.ID);
 
-                    cursor = db.query(
-                            Contract.EventTypes.TABLE,
-                            new String[] { Contract.EventTypes.NAME, Contract.EventTypes.ID },
-                            null,
-                            null,
-                            null,
-                            null,
-                            null
-                    );
-
-                    if (cursor != null && cursor.moveToFirst()) {
-                        final int mNamePosition = cursor.getColumnIndex(Contract.EventTypes.NAME);
-                        final int mIdPosition = cursor.getColumnIndex(Contract.EventTypes.ID);
-
-                        while (!cursor.isAfterLast()) {
-                            Log.d(TAG, "USER_EVENTS[" + cursor.getString(mNamePosition) + "] =" + cursor.getLong(mIdPosition));
-                            mUserEventIds.put(cursor.getString(mNamePosition), cursor.getLong(mIdPosition));
-                            cursor.moveToNext();
-                        }
-
-                        cursor.close();
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
+                while (!cursor.isAfterLast()) {
+                    Log.d(TAG, "USER_EVENTS[" + cursor.getString(mNamePosition) + "] =" + cursor.getLong(mIdPosition));
+                    mUserEventIds.put(cursor.getString(mNamePosition), cursor.getLong(mIdPosition));
+                    cursor.moveToNext();
                 }
-            }
-        }).start();
 
+                cursor.close();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -103,11 +94,12 @@ public class UserEvents extends DAO {
             public void run() {
                 Location location;
                 String message;
-                DatabaseHelper db = DatabaseHelper.getInstance(UserEvents.context);
                 ContentValues values = new ContentValues();
 
                 // INIT HASN'T FINISHED YET
-                if (mUserEventIds == null) return;
+                if (mUserEventIds == null) initUserEvents(context);
+
+                DatabaseHelper db = DatabaseHelper.getInstance(UserEvents.context);
 
                 values.put(Contract.UserEvents.TYPE, mUserEventIds.get(eventName));
                 message = eventName + " @ ";

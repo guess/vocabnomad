@@ -332,8 +332,6 @@ public class VocabListActivity extends ExpandableListActivity implements Expanda
             Log.e(TAG, "An error occurred when opening the VocabNomad database");
         }
 
-        UserEvents.init(getApplicationContext());
-
         UserManager.login(getApplicationContext());
 
         if (!UserManager.isLoggedIn()) {

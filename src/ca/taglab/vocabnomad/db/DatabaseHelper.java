@@ -125,6 +125,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int flags = SQLiteDatabase.OPEN_READWRITE;
         String path = DB_PATH + DB_NAME;
 
+        // Check if the database is already opened to avoid leaks
+        if (isOpened()) return;
+
         // Create the database if it doesn't exist
         create();
 
@@ -141,6 +144,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         createGoalTable();
         createVocabLevelTable();
+    }
+
+
+    private boolean isOpened() {
+        return (database != null && database.isOpen());
     }
 
 
