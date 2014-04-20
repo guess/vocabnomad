@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:background="@drawable/white_clickable" >
+
+    <ImageView android:id="@+id/recording_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/play"
+        android:contentDescription="@string/listen" />
+
+    <ca.taglab.vocabnomad.widgets.TypefacedTextView
+        android:id="@+id/recording_name"
+        style="@style/Text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:textSize="20sp"
+        android:singleLine="true"
+        android:text="@string/your_recording" />
+
+</LinearLayout>

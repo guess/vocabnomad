@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.util.Date;
+
 public class VocabProvider extends ContentProvider {
 
     public static final String TAG = "VocabProvider";
@@ -617,8 +619,13 @@ public class VocabProvider extends ContentProvider {
                 where = ADD_CONSTRAINT(where, Contract.WordTag.WORD_ID, uri.getPathSegments().get(3));
 
             case VTPAIRS:
-                table = Contract.Word.TABLE;
-                break;
+                table = Contract.WordTag.TABLE;
+                values = new ContentValues();
+                values.put(Contract.WordTag.DELETED, 1);
+                values.put(Contract.WordTag.DATE_MODIFIED, "/Date(" + Long.toString(new Date().getTime()) + "-0500)/");
+                affected = db.update(table, values, where, whereArgs);
+                getContext().getContentResolver().notifyChange(uri, null);
+                return affected;
 
             case WORD_ID:
                 where = ADD_CONSTRAINT(where, Contract.Word.WORD_ID, ContentUris.parseId(uri));

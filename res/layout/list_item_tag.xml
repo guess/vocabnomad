@@ -2,35 +2,33 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="?android:listPreferredItemHeightSmall"
+              android:layout_height="wrap_content"
               android:orientation="horizontal"
               android:showDividers="middle"
-              android:divider="?android:dividerVertical"
-              android:dividerPadding="8dp"
-              android:background="@android:color/white"
-              android:gravity="center">
+              android:divider="?android:dividerVertical">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
         android:src="@drawable/tag_normal"
         android:contentDescription="@string/tag" />
 
-    <!-- Dummy text view that will display the name of a random country. -->
-    <TextView android:id="@android:id/text1"
-              style="?android:textAppearanceMedium"
-              android:layout_width="0dp"
-              android:layout_weight="1"
-              android:layout_height="wrap_content"
-              android:textColor="@android:color/black"
-              android:paddingLeft="?android:listPreferredItemPaddingLeft" />
+    <ca.taglab.vocabnomad.widgets.TypefacedTextView
+        android:id="@+id/text"
+        style="@style/Text.Medium"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:layout_gravity="center_vertical"
+        android:padding="8dp" />
 
-    <!-- A button that, when pressed, will delete this list item row from its container. -->
-    <ImageButton android:id="@+id/delete_button"
-                 android:layout_width="48dp"
-                 android:layout_height="match_parent"
-                 android:src="@drawable/delete_dark_normal"
-                 android:background="?android:selectableItemBackground"
-                 android:contentDescription="@string/action_remove_tag" />
+    <ImageView android:id="@+id/delete_button"
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:src="@drawable/delete_dark_normal"
+        android:background="@drawable/white_clickable"
+        android:contentDescription="@string/action_remove_tag" />
 
 </LinearLayout>

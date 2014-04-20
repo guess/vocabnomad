@@ -25,6 +25,7 @@ import ca.taglab.vocabnomad.VocabActivity;
 import ca.taglab.vocabnomad.db.Contract;
 import ca.taglab.vocabnomad.db.DatabaseHelper;
 import ca.taglab.vocabnomad.db.UserEvents;
+import ca.taglab.vocabnomad.details.VocabDetailsActivity;
 import ca.taglab.vocabnomad.types.Word;
 
 import java.io.File;
@@ -113,7 +114,8 @@ public class VocabAdapter extends CursorAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ViewWordActivity.class);
+                //Intent intent = new Intent(context, ViewWordActivity.class);
+                Intent intent = new Intent(context, VocabDetailsActivity.class);
                 intent.putExtra("id", ((ViewHolder) v.getTag()).id);
                 ((Activity) context).startActivityForResult(intent, VocabActivity.VIEW_WORD);
             }
@@ -323,7 +325,8 @@ public class VocabAdapter extends CursorAdapter {
                                     0, 0,
                                     synHolder.word.getText().toString()
                             );
-                            Intent intent = new Intent(context, ViewWordActivity.class);
+                            //Intent intent = new Intent(context, ViewWordActivity.class);
+                            Intent intent = new Intent(context, VocabDetailsActivity.class);
                             intent.putExtra("id", synHolder.id);
                             ((Activity) context).startActivityForResult(intent, VocabActivity.VIEW_WORD);
                         }

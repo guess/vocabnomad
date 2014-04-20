@@ -7,14 +7,19 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 import ca.taglab.vocabnomad.R;
 
-/**
- * Created by steve on 3/18/2014.
- */
 public class TypefacedTextView extends TextView {
 
     public TypefacedTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        initTextView(context, attrs);
+    }
 
+    public TypefacedTextView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs);
+        initTextView(context, attrs);
+    }
+
+    private void initTextView(Context context, AttributeSet attrs) {
         //Typeface.createFromAsset doesn't work in the layout editor. Skipping...
         if (isInEditMode()) {
             return;

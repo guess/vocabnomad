@@ -42,6 +42,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".details.VocabDetailsActivity"
+            android:label="@string/word" />
+
         <activity android:name=".olm.LearnerModelActivity"
             android:label="@string/stats" />
 

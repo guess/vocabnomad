@@ -55,5 +55,8 @@
     <string name="vocabulary">Vocabulary</string>
     <string name="level">Level:</string>
     <string name="expires">Expires:</string>
+    <string name="write_something">Write something!</string>
+    <string name="start_recording">Record something!</string>
+    <string name="stop_recording">Click to stop recording</string>
 
 </resources>

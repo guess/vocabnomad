@@ -19,6 +19,7 @@ import ca.taglab.vocabnomad.auth.UserManager;
 import ca.taglab.vocabnomad.db.Contract;
 import ca.taglab.vocabnomad.db.DatabaseHelper;
 import ca.taglab.vocabnomad.db.UserEvents;
+import ca.taglab.vocabnomad.details.VocabDetailsActivity;
 import ca.taglab.vocabnomad.rest.DataSyncRestService;
 import ca.taglab.vocabnomad.rest.RestService;
 import ca.taglab.vocabnomad.types.Word;
@@ -455,7 +456,8 @@ public class VocabListActivity extends ExpandableListActivity implements Expanda
 
     @Override
     public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-        Intent intent = new Intent(this, ViewWordActivity.class);
+        //Intent intent = new Intent(this, ViewWordActivity.class);
+        Intent intent = new Intent(this, VocabDetailsActivity.class);
         intent.putExtra("id", id);
         startActivity(intent);
         return true;
@@ -463,7 +465,8 @@ public class VocabListActivity extends ExpandableListActivity implements Expanda
 
     @Override
     public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-        Intent intent = new Intent(this, ViewWordActivity.class);
+        //Intent intent = new Intent(this, ViewWordActivity.class);
+        Intent intent = new Intent(this, VocabDetailsActivity.class);
         intent.putExtra("id", id);
         startActivity(intent);
         return true;

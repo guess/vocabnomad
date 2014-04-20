@@ -29,6 +29,7 @@ import ca.taglab.vocabnomad.auth.UserManager;
 import ca.taglab.vocabnomad.db.Contract;
 import ca.taglab.vocabnomad.db.DatabaseHelper;
 import ca.taglab.vocabnomad.db.UserEvents;
+import ca.taglab.vocabnomad.details.VocabDetailsActivity;
 import ca.taglab.vocabnomad.rest.DataSyncRestService;
 import ca.taglab.vocabnomad.rest.RestService;
 
@@ -232,14 +233,7 @@ public class VocabActivity extends BaseActivity implements
         // Initialize the databases
         init();
 
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Intent intent = new Intent(VocabActivity.this, ViewWordActivity.class);
-                intent.putExtra("id", id);
-                startActivityForResult(intent, VIEW_WORD);
-            }
-        });
+        
 
         // Populate the vocabulary list
         mAdapter = new VocabAdapter(this, null, 0, filterHandler);

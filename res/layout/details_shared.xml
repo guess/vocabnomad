@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:showDividers="middle"
+    android:divider="?android:dividerHorizontal"
+    style="@style/Card">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:showDividers="middle"
+        android:divider="?android:dividerVertical"
+        android:orientation="horizontal">
+
+        <ca.taglab.vocabnomad.widgets.TypefacedTextView
+            style="@style/Text.Medium"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:textSize="30sp"
+            android:text="@string/shared"/>
+
+        <ImageView android:id="@+id/shared"
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:padding="4dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/checkbox_unchecked"
+            android:contentDescription="@string/shared" />
+
+    </LinearLayout>
+
+    <include layout="@layout/card_shaddow" />
+
+</LinearLayout>
