@@ -53,7 +53,8 @@
 
             </LinearLayout>
 
-            <ca.taglab.vocabnomad.widgets.TypefacedTextView android:id="@+id/level"
+            <ca.taglab.vocabnomad.widgets.TypefacedTextView
+                android:id="@+id/level"
                 style="@style/Text.Medium"
                 android:singleLine="true"
                 android:layout_width="fill_parent"

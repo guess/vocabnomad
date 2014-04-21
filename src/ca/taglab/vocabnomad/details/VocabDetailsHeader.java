@@ -23,6 +23,7 @@ import java.util.Locale;
 
 import ca.taglab.vocabnomad.R;
 import ca.taglab.vocabnomad.db.Contract;
+import ca.taglab.vocabnomad.types.VocabLevel;
 import ca.taglab.vocabnomad.widgets.ImageOpt;
 
 
@@ -62,11 +63,8 @@ public class VocabDetailsHeader extends Fragment implements TextToSpeech.OnInitL
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mLayout = inflater.inflate(R.layout.details_word, container, false);
         if (mLayout != null) {
-
             new LoadHeader().execute();
-
-            // TODO: Load the level
-            ((TextView) mLayout.findViewById(R.id.level)).setText("Level: 1");
+            new LoadLevel().execute();
         }
         return mLayout;
     }
@@ -206,6 +204,26 @@ public class VocabDetailsHeader extends Fragment implements TextToSpeech.OnInitL
             } else {
                 image.setImageResource(R.drawable.image_placeholder);
             }
+        }
+    }
+
+    class LoadLevel extends AsyncTask<Void, Void, Integer> {
+        @Override
+        protected Integer doInBackground(Void... voids) {
+            int level = 0;
+            Cursor cursor = VocabLevel.getVocabLevel(getActivity(), mWordId);
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    level = cursor.getInt(cursor.getColumnIndex(Contract.VocabLevel.LEVEL));
+                }
+                cursor.close();
+            }
+            return level;
+        }
+
+        @Override
+        protected void onPostExecute(Integer level) {
+            ((TextView) mLayout.findViewById(R.id.level)).setText("Level " + level);
         }
     }
 
