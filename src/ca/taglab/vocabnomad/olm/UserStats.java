@@ -3,6 +3,7 @@ package ca.taglab.vocabnomad.olm;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
 

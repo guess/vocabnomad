@@ -8,13 +8,12 @@ import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.SparseIntArray;
 
 import java.lang.ref.WeakReference;
-
 import ca.taglab.vocabnomad.R;
-import ca.taglab.vocabnomad.db.Contract;
 import ca.taglab.vocabnomad.types.Goal;
-import ca.taglab.vocabnomad.types.Word;
+import ca.taglab.vocabnomad.types.VocabLevel;
 
 public class VocabDetailsActivity extends FragmentActivity implements VocabDetailsListener {
     public static final String WORD_ID = "id";
@@ -30,6 +29,9 @@ public class VocabDetailsActivity extends FragmentActivity implements VocabDetai
 
     private DrawProgressForDuration mDrawerListener;
     private int mNumDrawing = 0;
+
+    // Experience points
+    private SparseIntArray experience;
 
     private static WeakReference<VocabDetailsActivity> wrActivity;
 
@@ -65,7 +67,21 @@ public class VocabDetailsActivity extends FragmentActivity implements VocabDetai
                 .replace(R.id.shared, shared)
                 .commit();
 
+        initExperiencePoints();
         new ActivateProgress().execute();
+    }
+
+    private void initExperiencePoints() {
+        experience = new SparseIntArray();
+        experience.put(VocabDetailsProgress.READ, 0);
+        experience.put(VocabDetailsProgress.WRITE, 0);
+        experience.put(VocabDetailsProgress.LISTEN, 0);
+        experience.put(VocabDetailsProgress.SPEAK, 0);
+    }
+
+    private void addExperience(int skill) {
+        int current = experience.get(skill);
+        experience.put(skill, ++current);
     }
 
     @Override
@@ -104,7 +120,17 @@ public class VocabDetailsActivity extends FragmentActivity implements VocabDetai
 
     @Override
     public void onProgressComplete() {
-        // TODO: Do something cool
+        VocabLevelUp dialogue = VocabLevelUp.newInstance(
+                mWordId,
+                experience.get(VocabDetailsProgress.WRITE),
+                experience.get(VocabDetailsProgress.READ),
+                experience.get(VocabDetailsProgress.SPEAK),
+                experience.get(VocabDetailsProgress.LISTEN)
+        );
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.word_details, dialogue)
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override
@@ -134,6 +160,7 @@ public class VocabDetailsActivity extends FragmentActivity implements VocabDetai
             bundle.putInt(PROGRESS, ++mProgress);
             message.setData(bundle);
             mHandler.sendMessage(message);
+            addExperience(skill);
         }
     }
 
@@ -141,7 +168,9 @@ public class VocabDetailsActivity extends FragmentActivity implements VocabDetai
 
         @Override
         protected Boolean doInBackground(Void... voids) {
-            return Goal.isVocabInActiveGoal(VocabDetailsActivity.this, mWordId);
+            boolean isGoal = Goal.isVocabInActiveGoal(VocabDetailsActivity.this, mWordId);
+            boolean isForgotten = VocabLevel.hasPassedForgetDate(VocabDetailsActivity.this, mWordId);
+            return isGoal && isForgotten;
         }
 
         @Override

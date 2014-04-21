@@ -84,6 +84,10 @@ public class VocabDetailsProgress extends Fragment {
                     image.setImageResource(R.drawable.speak);
                     break;
             }
+
+            if (mProgress == mMaxProgress && mListener != null) {
+                mListener.onProgressComplete();
+            }
         }
 
         return layout;

@@ -58,5 +58,8 @@
     <string name="write_something">Write something!</string>
     <string name="start_recording">Record something!</string>
     <string name="stop_recording">Click to stop recording</string>
+    <string name="congrats">Congrats!</string>
+    <string name="ok">Ok</string>
+    <string name="view_goal">View Goal</string>
 
 </resources>

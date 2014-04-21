@@ -57,14 +57,15 @@ public class VocabLevel {
      * Level up a vocabulary entry (i.e., increment interval length, forget date, and level).
      * @param context   Activity or application context.
      * @param id        Vocabulary device ID
+     * @return the new level
      */
-    public static void levelUp(Context context, long id) {
+    public static int levelUp(Context context, long id) {
         DatabaseHelper db = DatabaseHelper.getInstance(context);
         int level, interval;
 
         // Get the current statistics for the vocabulary entry
         Cursor cursor = VocabLevel.getVocabLevel(context, id);
-        if (!cursor.moveToFirst()) return;
+        if (!cursor.moveToFirst()) return 0;
         ContentValues values = new ContentValues();
 
         // Increment the level
@@ -96,6 +97,8 @@ public class VocabLevel {
 
         db.update(Contract.VocabLevel.TABLE, values, Contract.VocabLevel.WORD_ID + "=?",
                 new String[]{Long.toString(id)});
+
+        return level;
     }
 
 
