@@ -1,5 +1,6 @@
 package ca.taglab.vocabnomad.details;
 
+import android.app.Activity;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.SQLException;
@@ -31,9 +32,15 @@ public class VocabDetailsRecording extends AudioRecorderFragment {
     private long mWordId;
     private ViewGroup mList;
 
+    // Recorder
+    private boolean mIsRecording = false;
+    private boolean mIsSpeaking = false;
+
     // Audio player
     private String mPlaying = null;
     private AudioPlayer mPlayer;
+
+    private VocabDetailsListener mListener;
 
     public static VocabDetailsRecording newInstance(long id) {
         VocabDetailsRecording fragment = new VocabDetailsRecording();
@@ -68,6 +75,7 @@ public class VocabDetailsRecording extends AudioRecorderFragment {
     protected void onAmplitudeChanged(int amplitude) {
         if (amplitude > 1800) {
             Log.d(TAG, "Amplitude: " + amplitude);
+            mIsSpeaking = true;
         }
     }
 
@@ -103,6 +111,17 @@ public class VocabDetailsRecording extends AudioRecorderFragment {
         super.onDestroyView();
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (VocabDetailsListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
     class RecordingItemClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -120,14 +139,34 @@ public class VocabDetailsRecording extends AudioRecorderFragment {
             TextView status = (TextView) view.findViewById(R.id.status);
             if (!startRecording()) {
                 // Stop the recording
+                mIsRecording = false;
                 button.setImageResource(R.drawable.record);
                 status.setText(getResources().getString(R.string.start_recording));
                 String path = stopRecording();
                 new AddRecording().execute(path);
             } else {
                 // The recording has been started
+                mIsRecording = true;
                 button.setImageResource(R.drawable.stop);
                 status.setText(getResources().getString(R.string.stop_recording));
+                new SpeakingFeedback().start();
+            }
+        }
+    }
+
+    private class SpeakingFeedback extends Thread {
+        @Override
+        public void run() {
+            while (mIsRecording) {
+                if (mIsSpeaking && mListener != null) {
+                    mListener.onProgressIncrement(VocabDetailsProgress.SPEAK);
+                    mIsSpeaking = false;
+                }
+                try {
+                    sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -154,6 +193,9 @@ public class VocabDetailsRecording extends AudioRecorderFragment {
 
         private void stopPlaying() {
             reset();
+            if (mListener != null) {
+                mListener.onStopProgressIncrement();
+            }
             if (mButton != null) {
                 mButton.setImageResource(R.drawable.play);
             }
@@ -178,6 +220,9 @@ public class VocabDetailsRecording extends AudioRecorderFragment {
                 setDataSource(this.mPath);
                 prepare();
                 start();
+                if (mListener != null) {
+                    mListener.onStartProgressIncrement(VocabDetailsProgress.LISTEN);
+                }
                 if (mButton != null) {
                     mButton.setImageResource(R.drawable.stop);
                 }
@@ -186,7 +231,6 @@ public class VocabDetailsRecording extends AudioRecorderFragment {
                 stopPlaying();
             }
         }
-
 
     }
 

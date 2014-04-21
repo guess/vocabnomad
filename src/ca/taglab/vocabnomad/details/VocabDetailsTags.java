@@ -78,6 +78,9 @@ public class VocabDetailsTags extends Fragment {
                 mLayout.findViewById(R.id.tags).setVisibility(View.GONE);
                 mLayout.findViewById(R.id.edit).setVisibility(View.VISIBLE);
                 mLayout.findViewById(R.id.option_write).setBackgroundColor(Color.parseColor("#3049E20E"));
+                // TODO: Add points only if they actually add the tag
+                ((EditText) mLayout.findViewById(R.id.new_tag))
+                        .addTextChangedListener(new VocabWriteWatcher(mListener));
                 initAddTag();
             } else {
                 mLayout.findViewById(R.id.tags).setVisibility(View.VISIBLE);

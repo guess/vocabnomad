@@ -166,6 +166,9 @@ public class VocabDetailsSentence extends Fragment implements TextToSpeech.OnIni
                     @Override
                     public void run() {
                         TTSStatus.setImageResource(R.drawable.stop);
+                        if (mListener != null) {
+                            mListener.onStartProgressIncrement(VocabDetailsProgress.LISTEN);
+                        }
                     }
                 });
             }
@@ -176,6 +179,9 @@ public class VocabDetailsSentence extends Fragment implements TextToSpeech.OnIni
                     @Override
                     public void run() {
                         TTSStatus.setImageResource(R.drawable.play);
+                        if (mListener != null) {
+                            mListener.onStopProgressIncrement();
+                        }
                     }
                 });
             }
@@ -186,6 +192,9 @@ public class VocabDetailsSentence extends Fragment implements TextToSpeech.OnIni
                     @Override
                     public void run() {
                         TTSStatus.setImageResource(R.drawable.play);
+                        if (mListener != null) {
+                            mListener.onStopProgressIncrement();
+                        }
                     }
                 });
             }

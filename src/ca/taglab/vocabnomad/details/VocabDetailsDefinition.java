@@ -11,8 +11,11 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +75,7 @@ public class VocabDetailsDefinition extends Fragment implements TextToSpeech.OnI
         View layout = inflater.inflate(R.layout.details_definition, parent, false);
         if (layout != null) {
             mEdit = (EditText) layout.findViewById(R.id.edit);
+            mEdit.addTextChangedListener(new VocabWriteWatcher(mListener));
             TextView text = (TextView) layout.findViewById(R.id.text);
             mViewWord = layout.findViewById(R.id.view);
 
@@ -166,6 +170,9 @@ public class VocabDetailsDefinition extends Fragment implements TextToSpeech.OnI
                     @Override
                     public void run() {
                         TTSStatus.setImageResource(R.drawable.stop);
+                        if (mListener != null) {
+                            mListener.onStartProgressIncrement(VocabDetailsProgress.LISTEN);
+                        }
                     }
                 });
             }
@@ -176,6 +183,9 @@ public class VocabDetailsDefinition extends Fragment implements TextToSpeech.OnI
                     @Override
                     public void run() {
                         TTSStatus.setImageResource(R.drawable.play);
+                        if (mListener != null) {
+                            mListener.onStopProgressIncrement();
+                        }
                     }
                 });
             }
@@ -186,6 +196,9 @@ public class VocabDetailsDefinition extends Fragment implements TextToSpeech.OnI
                     @Override
                     public void run() {
                         TTSStatus.setImageResource(R.drawable.play);
+                        if (mListener != null) {
+                            mListener.onStopProgressIncrement();
+                        }
                     }
                 });
             }

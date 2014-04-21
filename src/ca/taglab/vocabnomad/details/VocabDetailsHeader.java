@@ -117,7 +117,9 @@ public class VocabDetailsHeader extends Fragment implements TextToSpeech.OnInitL
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        // TODO: Call activity
+                        if (mListener != null) {
+                            mListener.onStartProgressIncrement(VocabDetailsProgress.LISTEN);
+                        }
                     }
                 });
             }
@@ -127,7 +129,9 @@ public class VocabDetailsHeader extends Fragment implements TextToSpeech.OnInitL
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        // TODO: Call activity
+                        if (mListener != null) {
+                            mListener.onStopProgressIncrement();
+                        }
                     }
                 });
             }
@@ -137,7 +141,9 @@ public class VocabDetailsHeader extends Fragment implements TextToSpeech.OnInitL
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        // TODO: Call activity
+                        if (mListener != null) {
+                            mListener.onStopProgressIncrement();
+                        }
                     }
                 });
             }
