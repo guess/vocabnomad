@@ -1,5 +1,7 @@
 package ca.taglab.vocabnomad.olm;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 
 import ca.taglab.vocabnomad.R;
+import ca.taglab.vocabnomad.db.Contract;
 
 public class PieChartFragment extends Fragment {
 
@@ -29,7 +32,7 @@ public class PieChartFragment extends Fragment {
     public static final int LISTEN = 3;
 
     /** Colors to be used for the pie slices. */
-    private static int[] COLORS = new int[] {
+    public static int[] COLORS = new int[] {
             Color.parseColor("#C08DEEEE"),    // blue     read    8DEEEE
             Color.parseColor("#C049E20E"),    // green    write   49E20E
             Color.parseColor("#C0FF4500"),    // red      speak   FF4500
@@ -127,6 +130,7 @@ public class PieChartFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... voids) {
+            /* TODO: Temporarily using experience points
             this.reading = UserStats.getCount(getActivity(),
                     UserStats.getSelection(UserStats.READING_ACTIONS));
             this.writing = UserStats.getCount(getActivity(),
@@ -134,7 +138,13 @@ public class PieChartFragment extends Fragment {
             this.speaking = UserStats.getCount(getActivity(),
                     UserStats.getSelection(UserStats.SPEAKING_ACTIONS));
             this.listening = UserStats.getCount(getActivity(),
-                    UserStats.getSelection(UserStats.LISTENING_ACTIONS));
+                    UserStats.getSelection(UserStats.LISTENING_ACTIONS)); */
+            SharedPreferences preferences = getActivity()
+                    .getSharedPreferences(Contract.Skills.PREFERENCES, Context.MODE_PRIVATE);
+            this.reading = preferences.getInt(Contract.Skills.READING, 0);
+            this.writing = preferences.getInt(Contract.Skills.WRITING, 0);
+            this.speaking = preferences.getInt(Contract.Skills.SPEAKING, 0);
+            this.listening = preferences.getInt(Contract.Skills.LISTENING, 0);
 
             double total = reading + writing + speaking + listening;
             reading = Math.round((Double) (reading / total) * 100);

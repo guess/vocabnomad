@@ -72,6 +72,7 @@ public class VocabDetailsSentence extends Fragment implements TextToSpeech.OnIni
         View layout = inflater.inflate(R.layout.details_sentence, parent, false);
         if (layout != null) {
             mEdit = (EditText) layout.findViewById(R.id.edit);
+            mEdit.addTextChangedListener(new VocabWriteWatcher(mListener));
             TextView text = (TextView) layout.findViewById(R.id.text);
             mViewWord = layout.findViewById(R.id.view);
 

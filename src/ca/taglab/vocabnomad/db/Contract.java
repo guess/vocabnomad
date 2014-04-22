@@ -22,6 +22,15 @@ public final class Contract {
     public static final String DEFAULT_DATE = "1905-01-01-00-00";
 
 
+    public static final class Skills {
+        public static final String PREFERENCES = "vocabnomad_skills";
+        public static final String READING = "reading";
+        public static final String WRITING = "writing";
+        public static final String SPEAKING = "speaking";
+        public static final String LISTENING = "listening";
+    }
+
+
 
     public static final class Language implements BaseColumns {
 
