@@ -149,6 +149,7 @@
             android:divider="?android:dividerVertical">
 
             <ca.taglab.vocabnomad.widgets.TypefacedTextView
+                android:id="@+id/ok_button"
                 style="@style/Text.Title"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
@@ -159,6 +160,7 @@
                 android:background="@drawable/white_clickable" />
 
             <ca.taglab.vocabnomad.widgets.TypefacedTextView
+                android:id="@+id/goal_button"
                 style="@style/Text.Title"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"

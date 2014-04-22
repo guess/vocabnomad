@@ -1,7 +1,6 @@
 package ca.taglab.vocabnomad.details;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 
 import ca.taglab.vocabnomad.R;
 import ca.taglab.vocabnomad.types.VocabLevel;
-import ca.taglab.vocabnomad.widgets.TypefacedTextView;
 
 public class VocabLevelUp extends Fragment {
     private static final String WORD_ID = "word_id";
@@ -67,6 +65,11 @@ public class VocabLevelUp extends Fragment {
             ((TextView) mLayout.findViewById(R.id.listen)).setText("+" + mListenPoints + " exp");
             ((TextView) mLayout.findViewById(R.id.speak)).setText("+" + mSpeakPoints + " exp");
             new LevelUp().execute();
+
+            mLayout.findViewById(R.id.ok_button).setOnClickListener(new ClosePrompt());
+
+            // TODO: Go to the goals instead of just closing the prompt
+            mLayout.findViewById(R.id.goal_button).setOnClickListener(new ClosePrompt());
         }
         return mLayout;
     }
@@ -87,6 +90,17 @@ public class VocabLevelUp extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+
+    class ClosePrompt implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            if (mListener != null) {
+                mListener.onClosePrompt();
+            }
+        }
     }
 
 

@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.SparseIntArray;
+import android.view.View;
 
 import java.lang.ref.WeakReference;
 import ca.taglab.vocabnomad.R;
@@ -120,6 +121,7 @@ public class VocabDetailsActivity extends FragmentActivity implements VocabDetai
 
     @Override
     public void onProgressComplete() {
+        // Open the level up prompt
         VocabLevelUp dialogue = VocabLevelUp.newInstance(
                 mWordId,
                 experience.get(VocabDetailsProgress.WRITE),
@@ -162,6 +164,19 @@ public class VocabDetailsActivity extends FragmentActivity implements VocabDetai
             mHandler.sendMessage(message);
             addExperience(skill);
         }
+    }
+
+    @Override
+    public void onClosePrompt() {
+        // Close the prompt by popping the back stack
+        getSupportFragmentManager().popBackStack();
+
+        // Close the experience points fragment and update the vocabulary header
+        VocabDetailsHeader header = VocabDetailsHeader.newInstance(mWordId);
+        getSupportFragmentManager().beginTransaction()
+                .remove(getSupportFragmentManager().findFragmentById(R.id.word_progress))
+                .replace(R.id.word_header, header)
+                .commit();
     }
 
     class ActivateProgress extends AsyncTask<Void, Void, Boolean> {
