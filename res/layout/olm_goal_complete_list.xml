@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#DDDDDD"
-    tools:context="ca.taglab.vocabnomad.CompleteGoalsFragment">
+    tools:context="ca.taglab.vocabnomad.olm.CompleteGoalsFragment">
 
     <GridView android:id="@+id/gridview"
         android:layout_width="fill_parent"
