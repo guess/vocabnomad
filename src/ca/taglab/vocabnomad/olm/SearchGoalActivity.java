@@ -68,7 +68,7 @@ public class SearchGoalActivity extends ListActivity {
 
         /* Filter the list based on the search query */
         mSearchBox = (EditText) findViewById(R.id.goal);
-        if (!isAddingGoal) mSearchBox.setHint("Search topic");
+        if (isAddingGoal) mSearchBox.setHint("Search topic");
         mSearchBox.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -120,22 +120,22 @@ public class SearchGoalActivity extends ListActivity {
         group = (ViewGroup) findViewById(R.id.read);
         ((ImageView) group.findViewById(R.id.image)).setImageResource(R.drawable.read);
         ((TextView) group.findViewById(R.id.title)).setText(getString(R.string.reading));
-        if (!isAddingGoal) group.setVisibility(View.INVISIBLE);
+        if (isAddingGoal) group.setVisibility(View.INVISIBLE);
 
         group = (ViewGroup) findViewById(R.id.write);
         ((ImageView) group.findViewById(R.id.image)).setImageResource(R.drawable.write);
         ((TextView) group.findViewById(R.id.title)).setText(getString(R.string.writing));
-        if (!isAddingGoal) group.setVisibility(View.INVISIBLE);
+        if (isAddingGoal) group.setVisibility(View.INVISIBLE);
 
         group = (ViewGroup) findViewById(R.id.listen);
         ((ImageView) group.findViewById(R.id.image)).setImageResource(R.drawable.listen);
         ((TextView) group.findViewById(R.id.title)).setText(getString(R.string.listening));
-        if (!isAddingGoal) group.setVisibility(View.INVISIBLE);
+        if (isAddingGoal) group.setVisibility(View.INVISIBLE);
 
         group = (ViewGroup) findViewById(R.id.speak);
         ((ImageView) group.findViewById(R.id.image)).setImageResource(R.drawable.speak);
         ((TextView) group.findViewById(R.id.title)).setText(getString(R.string.speaking));
-        if (!isAddingGoal) group.setVisibility(View.INVISIBLE);
+        if (isAddingGoal) group.setVisibility(View.INVISIBLE);
     }
 
 
