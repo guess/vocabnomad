@@ -21,7 +21,7 @@ public class VocabDetailsActivity extends FragmentActivity implements VocabDetai
     public static final String SKILL = "skill";
     public static final String PROGRESS = "progress";
 
-    private static final int MAX_PROGRESS = 250;
+    private static final int MAX_PROGRESS = 150;
 
     private long mWordId;
     private boolean mIsGoal = false;
