@@ -3,6 +3,7 @@ package ca.taglab.vocabnomad.details;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import ca.taglab.vocabnomad.R;
 import ca.taglab.vocabnomad.db.Contract;
+import ca.taglab.vocabnomad.types.Goal;
 import ca.taglab.vocabnomad.types.VocabLevel;
 
 public class VocabLevelUp extends Fragment {
@@ -131,6 +133,32 @@ public class VocabLevelUp extends Fragment {
         @Override
         protected void onPostExecute(Integer level) {
             ((TextView) mLayout.findViewById(R.id.level)).setText("Level " + level + "!");
+            new Thread(new CheckCompletedGoals()).start();
+        }
+    }
+
+
+    class CheckCompletedGoals implements Runnable {
+        @Override
+        public void run() {
+            Goal.updateProgress(getActivity());
+            Cursor cursor = Goal.getActiveGoals(getActivity());
+            if (cursor != null) {
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast()) {
+                    String goal = cursor.getString(cursor.getColumnIndex(Contract.Goals.GOAL_NAME));
+                    int progress = cursor.getInt(cursor.getColumnIndex(Contract.Goals.PROGRESS));
+                    int total = cursor.getInt(cursor.getColumnIndex(Contract.Goals.TOTAL));
+                    if (progress == total) {
+                        Goal.completeGoal(getActivity(), goal);
+                        if (mListener != null) {
+                            mListener.onGoalCompleted(goal);
+                        }
+                    }
+                    cursor.moveToNext();
+                }
+                cursor.close();
+            }
         }
     }
 

@@ -61,5 +61,7 @@
     <string name="congrats">Congrats!</string>
     <string name="ok">Ok</string>
     <string name="view_goal">View Goal</string>
+    <string name="view">View</string>
+    <string name="goal_complete">Goal Completed!</string>
 
 </resources>

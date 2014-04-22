@@ -14,4 +14,5 @@ public interface VocabDetailsListener {
     public void onStartProgressIncrement(int skill);
     public void onStopProgressIncrement();
     public void onClosePrompt();
+    public void onGoalCompleted(String goal);
 }

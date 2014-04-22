@@ -74,7 +74,6 @@ public class VocabDetailsRecording extends AudioRecorderFragment {
     @Override
     protected void onAmplitudeChanged(int amplitude) {
         if (amplitude > 1800) {
-            Log.d(TAG, "Amplitude: " + amplitude);
             mIsSpeaking = true;
         }
     }

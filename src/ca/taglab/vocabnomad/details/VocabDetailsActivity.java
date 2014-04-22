@@ -5,14 +5,16 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.SparseIntArray;
-import android.view.View;
 
 import java.lang.ref.WeakReference;
+
 import ca.taglab.vocabnomad.R;
+import ca.taglab.vocabnomad.olm.GoalCompletePrompt;
 import ca.taglab.vocabnomad.types.Goal;
 import ca.taglab.vocabnomad.types.VocabLevel;
 
@@ -171,12 +173,17 @@ public class VocabDetailsActivity extends FragmentActivity implements VocabDetai
         // Close the prompt by popping the back stack
         getSupportFragmentManager().popBackStack();
 
-        // Close the experience points fragment and update the vocabulary header
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+        Fragment progress = getSupportFragmentManager().findFragmentById(R.id.word_progress);
+        if (progress != null) {
+            ft.remove(progress);
+        }
+
         VocabDetailsHeader header = VocabDetailsHeader.newInstance(mWordId);
-        getSupportFragmentManager().beginTransaction()
-                .remove(getSupportFragmentManager().findFragmentById(R.id.word_progress))
-                .replace(R.id.word_header, header)
-                .commit();
+        ft.replace(R.id.word_header, header);
+
+        ft.commit();
     }
 
     class ActivateProgress extends AsyncTask<Void, Void, Boolean> {
@@ -219,6 +226,7 @@ public class VocabDetailsActivity extends FragmentActivity implements VocabDetai
                 };
 
                 new DrawProgress(VocabDetailsProgress.READ, 25).start();
+                // TODO new DrawProgress(VocabDetailsProgress.READ, 100).start();
             }
         }
     }
@@ -267,10 +275,20 @@ public class VocabDetailsActivity extends FragmentActivity implements VocabDetai
                 onProgressIncrement(skill);
                 try {
                     sleep(100);
+                    // TODO sleep(10);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    @Override
+    public void onGoalCompleted(String goal) {
+        GoalCompletePrompt prompt = GoalCompletePrompt.newInstance(goal);
+        if (wrActivity.get() != null && !wrActivity.get().isFinishing()) {
+            FragmentManager manager = wrActivity.get().getSupportFragmentManager();
+            manager.beginTransaction().add(R.id.word_details, prompt).addToBackStack(null).commit();
         }
     }
 }

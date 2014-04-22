@@ -2,7 +2,8 @@ package ca.taglab.vocabnomad.olm;
 
 import android.app.ActionBar;
 import android.content.Intent;
-import android.database.Cursor;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,14 +13,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import ca.taglab.vocabnomad.BaseActivity;
 import ca.taglab.vocabnomad.R;
-import ca.taglab.vocabnomad.auth.UserManager;
-import ca.taglab.vocabnomad.db.Contract;
-import ca.taglab.vocabnomad.db.DatabaseHelper;
-import ca.taglab.vocabnomad.db.UserEvents;
-import ca.taglab.vocabnomad.types.Goal;
 
 public class LearnerModelActivity extends BaseActivity {
     public static final String TAG = "LearnerModelActivity";
@@ -32,22 +29,12 @@ public class LearnerModelActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.olm_main);
 
-        /* TODO: Comment this out when you are not using this as first activity
-        try {
-            DatabaseHelper.getInstance(getApplicationContext()).open();
-        } catch(Exception e) {
-            Log.e(TAG, "An error occurred when opening the VocabNomad database");
-        }
-        UserEvents.init(this);
-        UserManager.login(this); */
-
-
         mAdapter = new LearnerModelAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                getActionBar().setSelectedNavigationItem(position);
+                if (getActionBar() != null) getActionBar().setSelectedNavigationItem(position);
                 super.onPageSelected(position);
             }
         });
@@ -79,9 +66,16 @@ public class LearnerModelActivity extends BaseActivity {
 
     private void createTabs() {
         final ActionBar actionBar = getActionBar();
+        if (actionBar == null) return;
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.search_bg));
-        actionBar.setTitle("");
+        actionBar.setTitle("Statistics");
+        Resources resources = Resources.getSystem();
+        if (resources != null) {
+            int titleId = resources.getIdentifier("action_bar_title", "id", "android");
+            TextView title = (TextView)findViewById(titleId);
+            title.setTextColor(Color.parseColor("#99FFFFFF"));
+        }
 
         // Create a tab listener that is called when the user changes tabs.
         ActionBar.TabListener tabListener = new ActionBar.TabListener() {
@@ -109,6 +103,14 @@ public class LearnerModelActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (mViewPager.getCurrentItem() != 0) {
+            mViewPager.setCurrentItem(0, true);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     class LearnerModelAdapter extends FragmentStatePagerAdapter {
 
@@ -159,27 +161,6 @@ public class LearnerModelActivity extends BaseActivity {
 
             return super.getPageTitle(position);
         }
-    }
-
-    private long getTagId(String name) {
-        DatabaseHelper db = DatabaseHelper.getInstance(this);
-        Cursor cursor = db.query(
-                Contract.Tag.TABLE,
-                Contract.Tag.PROJECTION,
-                Contract.Tag.NAME + "=?",
-                new String[] { name },
-                null, null, null
-        );
-
-        long id = 0;
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                id = cursor.getLong(cursor.getColumnIndex(Contract.Tag._ID));
-            }
-            cursor.close();
-        }
-
-        return id;
     }
 
 }

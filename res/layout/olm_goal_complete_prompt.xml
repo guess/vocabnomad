@@ -1,0 +1,93 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#CC000000"
+    tools:context="ca.taglab.vocabnomad.olm.GoalCompletePrompt">
+
+    <LinearLayout
+        style="@style/Card"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:showDividers="middle"
+        android:divider="?android:dividerHorizontal" >
+
+        <ca.taglab.vocabnomad.widgets.TypefacedTextView
+            android:id="@+id/points"
+            style="@style/Text.Medium"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:padding="12dp"
+            android:background="#6600FF00" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <ImageView
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:src="@drawable/trophy"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@string/level" />
+
+            <ca.taglab.vocabnomad.widgets.TypefacedTextView
+                style="@style/Text.Title"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:layout_gravity="center_vertical"
+                android:padding="8dp"
+                android:text="@string/goal_complete"/>
+
+        </LinearLayout>
+
+        <ca.taglab.vocabnomad.widgets.TypefacedTextView
+            android:id="@+id/goal"
+            style="@style/Text.Medium"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="12dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:showDividers="middle"
+            android:divider="?android:dividerVertical">
+
+            <ca.taglab.vocabnomad.widgets.TypefacedTextView
+                android:id="@+id/ok_button"
+                style="@style/Text.Title"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:padding="8dp"
+                android:text="@string/ok"
+                android:background="@drawable/white_clickable" />
+
+            <ca.taglab.vocabnomad.widgets.TypefacedTextView
+                android:id="@+id/view_button"
+                style="@style/Text.Title"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:padding="8dp"
+                android:text="@string/view"
+                android:background="@drawable/white_clickable" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>
