@@ -1,9 +1,9 @@
 package ca.taglab.vocabnomad.olm;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -23,6 +23,10 @@ public class GoalsListFragment extends Fragment {
     private int mNumGoals;
     private boolean running = false;
     private View mList;
+    private View mAddButton;
+    private View mProgress;
+
+    private ArrayList<String> mGoals;
 
     @Override
     public void onResume() {
@@ -30,6 +34,7 @@ public class GoalsListFragment extends Fragment {
         if (!running) {
             running = true;
             mList.setVisibility(View.INVISIBLE);
+            mProgress.setVisibility(View.VISIBLE);
             new SetGoals().execute();
         }
     }
@@ -44,7 +49,19 @@ public class GoalsListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View layout = inflater.inflate(R.layout.olm_goal_list, container, false);
-        if (layout != null) mList = layout.findViewById(R.id.fragment_container);
+        if (layout != null) {
+            mProgress = layout.findViewById(R.id.progress);
+            mList = layout.findViewById(R.id.fragment_container);
+            mAddButton = layout.findViewById(R.id.add_goal);
+            mAddButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity(), SearchGoalActivity.class);
+                    intent.putExtra(SearchGoalActivity.ADD_GOAL, true);
+                    startActivity(intent);
+                }
+            });
+        }
         return layout;
     }
 
@@ -52,47 +69,118 @@ public class GoalsListFragment extends Fragment {
 
         @Override
         protected ArrayList<Fragment> doInBackground(Void... voids) {
+            ArrayList<String> goals = new ArrayList<String>();
             ArrayList<Fragment> fragments = new ArrayList<Fragment>();
             Cursor cursor = Goal.getActiveGoals(getActivity());
             if (cursor != null) {
                 ActiveGoalFragment fragment;
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast()) {
-                    Log.i(TAG, "Name: " + cursor.getString(cursor.getColumnIndex(Contract.Goals.GOAL_NAME)));
-                    fragment = ActiveGoalFragment.newInstance(
-                            cursor.getString(cursor.getColumnIndex(Contract.Goals.GOAL_NAME)));
+                    String goal = cursor.getString(cursor.getColumnIndex(Contract.Goals.GOAL_NAME));
+                    Log.i(TAG, "Name: " + goal);
+                    fragment = ActiveGoalFragment.newInstance(goal);
                     fragments.add(cursor.getPosition(), fragment);
+                    goals.add(goal);
                     cursor.moveToNext();
                 }
                 cursor.close();
             }
+
+            if (!hasGoalsChanged(goals)) {
+                // Do not update the UI if the goals are the same
+                return null;
+            }
+
             return fragments;
+        }
+
+        private boolean hasGoalsChanged(ArrayList<String> curGoals) {
+            boolean isChanged = true;
+
+            // Load new goals if the array is not in memory, or if the list sizes are different
+            if (mGoals != null && mGoals.size() == curGoals.size()) {
+                isChanged = false;
+                // Since the list sizes are the same, make sure all of the goals are the same
+                for (String goal : curGoals) {
+                    if (!mGoals.contains(goal)) {
+                        isChanged = true;
+                    }
+                }
+            }
+
+            if (isChanged) {
+                // Update the goals in memory if the list has changed
+                mGoals = curGoals;
+            }
+
+            return isChanged;
+
+
         }
 
         @Override
         protected void onPostExecute(final ArrayList<Fragment> fragments) {
-            if (fragments == null || fragments.isEmpty()) {
+            FragmentTransaction ft;
+
+            if (fragments == null) {
+                mList.setVisibility(View.VISIBLE);
+                mProgress.setVisibility(View.GONE);
                 running = false;
                 return;
             }
 
-            // Remove all old fragments
-            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+            // Remove all previous goals
+            ft = getChildFragmentManager().beginTransaction();
             for (int i = 0; i < mNumGoals; i++) {
-                ft.remove(getChildFragmentManager().findFragmentByTag(Integer.toString(i)));
+                switch (i) {
+                    case 0:
+                        ft.remove(getChildFragmentManager().findFragmentById(R.id.goal1));
+                        break;
+                    case 1:
+                        ft.remove(getChildFragmentManager().findFragmentById(R.id.goal2));
+                        break;
+                    case 2:
+                        ft.remove(getChildFragmentManager().findFragmentById(R.id.goal3));
+                        break;
+                    case 3:
+                        ft.remove(getChildFragmentManager().findFragmentById(R.id.goal4));
+                        break;
+                }
             }
             ft.commit();
 
-            mList.setVisibility(View.VISIBLE);
-
-            // Add all new fragments
+            // Hide the add goals button if there are 4 goals
             mNumGoals = fragments.size();
-            for (int i = 0; i < mNumGoals; i++) {
-                getChildFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.slide_from_bottom, R.anim.slide_from_bottom)
-                        .add(R.id.fragment_container, fragments.get(i), Integer.toString(i))
-                        .commit();
+            if (mNumGoals < 4) {
+                mAddButton.setVisibility(View.VISIBLE);
+            } else {
+                mAddButton.setVisibility(View.GONE);
             }
+
+            // Show the list again and remove the progress bar
+            mList.setVisibility(View.VISIBLE);
+            mProgress.setVisibility(View.GONE);
+
+            // Populate the list with the currently active goals
+            ft = getChildFragmentManager().beginTransaction();
+            for (int i = 0; i < mNumGoals; i++) {
+                switch (i) {
+                    case 0:
+                        ft.replace(R.id.goal1, fragments.get(i));
+                        break;
+                    case 1:
+                        ft.replace(R.id.goal2, fragments.get(i));
+                        break;
+                    case 2:
+                        ft.replace(R.id.goal3, fragments.get(i));
+                        break;
+                    case 3:
+                        ft.replace(R.id.goal4, fragments.get(i));
+                        break;
+                }
+            }
+            ft.setCustomAnimations(R.anim.slide_from_bottom, R.anim.slide_from_bottom);
+            ft.commit();
 
             running = false;
         }

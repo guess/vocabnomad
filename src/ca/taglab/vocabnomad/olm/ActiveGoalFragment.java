@@ -84,7 +84,7 @@ public class ActiveGoalFragment extends Fragment {
     }
 
     class SetRelatedTags extends AsyncTask<String, Void, Cursor> {
-        private static final int TAG_LIMIT = 5;
+        private static final int TAG_LIMIT = 4;
         private ViewGroup layout;
 
         SetRelatedTags(ViewGroup layout) {
@@ -110,6 +110,7 @@ public class ActiveGoalFragment extends Fragment {
 
                     if (tag != null) {
                         tag.setText(tags.getString(tags.getColumnIndex(Contract.View.NAME)));
+                        tag.setTextSize(18);
                         tag.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -142,7 +143,6 @@ public class ActiveGoalFragment extends Fragment {
         protected Void doInBackground(String... tags) {
             String tag = tags[0];
 
-            // TODO: This would do it 4 times??? DO IN MAIN ACTIVITY
             Goal.updateProgress(getActivity());
 
             Cursor cursor = Goal.getGoal(getActivity(), tag);

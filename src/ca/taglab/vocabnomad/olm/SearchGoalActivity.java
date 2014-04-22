@@ -1,10 +1,13 @@
 package ca.taglab.vocabnomad.olm;
 
 
+import android.app.ActionBar;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -20,19 +23,37 @@ import android.widget.ListAdapter;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-import java.io.IOException;
-
 import ca.taglab.vocabnomad.R;
-import ca.taglab.vocabnomad.auth.UserManager;
 import ca.taglab.vocabnomad.db.Contract;
-import ca.taglab.vocabnomad.db.DatabaseHelper;
+import ca.taglab.vocabnomad.types.Goal;
 
 public class SearchGoalActivity extends ListActivity {
+    public static final String ADD_GOAL = "add_goal";
+    private boolean isAddingGoal = false;
+
+    private EditText mSearchBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.olm_add_goal);
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            isAddingGoal = bundle.getBoolean(ADD_GOAL, false);
+        }
+
+        ActionBar actionBar = getActionBar();
+        if (actionBar != null) {
+            actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.search_bg));
+            if (!isAddingGoal) actionBar.setTitle("Search Statistics");
+            Resources resources = Resources.getSystem();
+            if (resources != null) {
+                int titleId = resources.getIdentifier("action_bar_title", "id", "android");
+                TextView title = (TextView)findViewById(titleId);
+                title.setTextColor(Color.parseColor("#99FFFFFF"));
+            }
+        }
 
         /* Create the list */
         ListAdapter adapter = new GoalAdapter(
@@ -46,7 +67,9 @@ public class SearchGoalActivity extends ListActivity {
         setListAdapter(adapter);
 
         /* Filter the list based on the search query */
-        ((EditText) findViewById(R.id.goal)).addTextChangedListener(new TextWatcher() {
+        mSearchBox = (EditText) findViewById(R.id.goal);
+        if (!isAddingGoal) mSearchBox.setHint("Search topic");
+        mSearchBox.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
@@ -69,9 +92,15 @@ public class SearchGoalActivity extends ListActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
                 TextView item = (TextView) view.findViewById(R.id.title);
                 if (item != null && item.getText() != null) {
-                    Intent intent = new Intent(SearchGoalActivity.this, TagDetailsActivity.class);
-                    intent.putExtra(TagDetailsActivity.TAG_NAME, item.getText().toString());
-                    startActivity(intent);
+                    String name = item.getText().toString();
+                    if (isAddingGoal) {
+                        Goal.addGoal(SearchGoalActivity.this, id, name);
+                        finish();
+                    } else {
+                        Intent intent = new Intent(SearchGoalActivity.this, TagDetailsActivity.class);
+                        intent.putExtra(TagDetailsActivity.TAG_NAME, name);
+                        startActivity(intent);
+                    }
                 }
             }
         });
@@ -84,7 +113,6 @@ public class SearchGoalActivity extends ListActivity {
 
     /**
      * Draw the macro skill buttons that appear when there is no search query.
-     * TODO: Do not draw goals that are already added
      */
     private void setMacroSkills() {
         ViewGroup group;
@@ -92,18 +120,36 @@ public class SearchGoalActivity extends ListActivity {
         group = (ViewGroup) findViewById(R.id.read);
         ((ImageView) group.findViewById(R.id.image)).setImageResource(R.drawable.read);
         ((TextView) group.findViewById(R.id.title)).setText(getString(R.string.reading));
+        if (!isAddingGoal) group.setVisibility(View.INVISIBLE);
 
         group = (ViewGroup) findViewById(R.id.write);
         ((ImageView) group.findViewById(R.id.image)).setImageResource(R.drawable.write);
         ((TextView) group.findViewById(R.id.title)).setText(getString(R.string.writing));
+        if (!isAddingGoal) group.setVisibility(View.INVISIBLE);
 
         group = (ViewGroup) findViewById(R.id.listen);
         ((ImageView) group.findViewById(R.id.image)).setImageResource(R.drawable.listen);
         ((TextView) group.findViewById(R.id.title)).setText(getString(R.string.listening));
+        if (!isAddingGoal) group.setVisibility(View.INVISIBLE);
 
         group = (ViewGroup) findViewById(R.id.speak);
         ((ImageView) group.findViewById(R.id.image)).setImageResource(R.drawable.speak);
         ((TextView) group.findViewById(R.id.title)).setText(getString(R.string.speaking));
+        if (!isAddingGoal) group.setVisibility(View.INVISIBLE);
+    }
+
+
+    /*
+     *  If there is text in the search box, use the back button to clear it.
+     *  Otherwise, use the back button to go back.
+     */
+    @Override
+    public void onBackPressed() {
+        if (mSearchBox.getText() != null && !mSearchBox.getText().toString().isEmpty()) {
+            mSearchBox.setText("");
+        } else {
+            super.onBackPressed();
+        }
     }
 
 
@@ -152,7 +198,5 @@ public class SearchGoalActivity extends ListActivity {
             view.findViewById(R.id.header).setBackgroundResource(R.drawable.white_clickable);
             super.bindView(view, context, cursor);
         }
-
-
     }
 }

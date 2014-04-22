@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="ca.taglab.vocabnomad.olm.GoalsListFragment"
     android:orientation="vertical"
@@ -8,11 +8,59 @@
     android:layout_height="match_parent"
     android:background="#DDDDDD" >
 
-    <LinearLayout android:id="@+id/fragment_container"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+    <ScrollView
         android:orientation="vertical"
-        android:animateLayoutChanges="true"
-        android:paddingTop="8dp"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</ScrollView>
+        <LinearLayout android:id="@+id/fragment_container"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:animateLayoutChanges="true"
+            android:paddingTop="8dp">
+
+            <FrameLayout android:id="@+id/goal1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+
+            <FrameLayout android:id="@+id/goal2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+
+            <FrameLayout android:id="@+id/goal3"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+
+            <FrameLayout android:id="@+id/goal4"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout android:id="@+id/add_goal"
+                style="@style/Card"
+                android:layout_height="wrap_content">
+
+                <ca.taglab.vocabnomad.widgets.TypefacedTextView
+                    style="@style/Text.Medium"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/white_clickable"
+                    android:padding="12dp"
+                    android:gravity="center"
+                    android:textColor="#88000000"
+                    android:text="@string/add_goal"/>
+
+                <include layout="@layout/card_shaddow" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <ProgressBar android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
+</FrameLayout>

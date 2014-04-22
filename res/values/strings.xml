@@ -46,7 +46,7 @@
     <string name="action_expand">Expand</string>
     <string name="skill">Skill</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="add_goal">Add goal</string>
+    <string name="add_goal">Add Goal</string>
     <string name="type_goal">Select skill or search topic</string>
     <string name="stats">Statistics</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
