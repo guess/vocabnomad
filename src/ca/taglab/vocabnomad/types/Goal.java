@@ -391,7 +391,7 @@ public class Goal {
             cursor.moveToFirst();
             while (!cursor.isAfterLast() && goals.size() < count) {
                 String goal = cursor.getString(cursor.getColumnIndex(Contract.View.NAME));
-                if (Goal.isManageableGoal(context, goal)) {
+                if (Goal.isManageableGoal(context, goal) && !Goal.isCompletedGoal(context, goal)) {
                     goals.add(goal);
                 }
                 cursor.moveToNext();

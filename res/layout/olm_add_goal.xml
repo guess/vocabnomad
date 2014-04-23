@@ -1,67 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent" android:background="#DDDDDD">
 
-    <EditText android:id="@+id/goal"
-        style="@style/Text.Medium"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:hint="@string/type_goal"
-        android:background="@color/white"
-        android:gravity="center_vertical"
-        android:singleLine="true"
-        android:drawableLeft="@android:drawable/ic_search_category_default"
-        android:drawablePadding="8dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
 
-    <include layout="@layout/card_shaddow" />
+        <EditText android:id="@+id/goal"
+            style="@style/Text.Medium"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:hint="@string/type_goal"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:drawableLeft="@android:drawable/ic_search_category_default"
+            android:drawablePadding="8dp"/>
 
-    <ListView android:id="@android:id/list"
+        <include layout="@layout/card_shaddow" />
+
+        <ListView android:id="@android:id/list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:paddingTop="8dp"
+            tools:listitem="@layout/card_item"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="10.0sp"
+            android:visibility="gone"/>
+
+        <LinearLayout android:id="@+id/read"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="2dp">
+            <include layout="@layout/card_item" />
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/write"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="2dp">
+            <include layout="@layout/card_item" />
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/listen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="2dp">
+            <include layout="@layout/card_item" />
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/speak"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="2dp">
+            <include layout="@layout/card_item" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <FrameLayout android:id="@+id/overlay"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:paddingTop="8dp"
-        tools:listitem="@layout/card_item"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="10.0sp"
-        android:visibility="gone"/>
+        android:background="#CC000000"
+        android:visibility="gone" />
 
-    <LinearLayout android:id="@+id/read"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="2dp">
-        <include layout="@layout/card_item" />
-    </LinearLayout>
-
-    <LinearLayout android:id="@+id/write"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="2dp">
-        <include layout="@layout/card_item" />
-    </LinearLayout>
-
-    <LinearLayout android:id="@+id/listen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="2dp">
-        <include layout="@layout/card_item" />
-    </LinearLayout>
-
-    <LinearLayout android:id="@+id/speak"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="2dp">
-        <include layout="@layout/card_item" />
-    </LinearLayout>
-
-</LinearLayout>
+</FrameLayout>

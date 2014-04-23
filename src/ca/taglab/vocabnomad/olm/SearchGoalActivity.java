@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -20,6 +21,7 @@ import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
@@ -27,11 +29,12 @@ import ca.taglab.vocabnomad.R;
 import ca.taglab.vocabnomad.db.Contract;
 import ca.taglab.vocabnomad.types.Goal;
 
-public class SearchGoalActivity extends ListActivity {
+public class SearchGoalActivity extends FragmentActivity {
     public static final String ADD_GOAL = "add_goal";
     private boolean isAddingGoal = false;
 
     private EditText mSearchBox;
+    private ListView mListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,8 @@ public class SearchGoalActivity extends ListActivity {
             }
         }
 
+        mListView = (ListView) findViewById(android.R.id.list);
+
         /* Create the list */
         ListAdapter adapter = new GoalAdapter(
                 this,
@@ -64,7 +69,7 @@ public class SearchGoalActivity extends ListActivity {
                 new int[] { R.id.title },
                 0
         );
-        setListAdapter(adapter);
+        mListView.setAdapter(adapter);
 
         /* Filter the list based on the search query */
         mSearchBox = (EditText) findViewById(R.id.goal);
@@ -87,13 +92,13 @@ public class SearchGoalActivity extends ListActivity {
         });
 
         /* Go to the detailed tag view when clicking on a list item */
-        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
                 TextView item = (TextView) view.findViewById(R.id.title);
                 if (item != null && item.getText() != null) {
                     String name = item.getText().toString();
-                    if (isAddingGoal) {
+                    if (isAddingGoal && Goal.isManageableGoal(SearchGoalActivity.this, name)) {
                         Goal.addGoal(SearchGoalActivity.this, id, name);
                         finish();
                     } else {
@@ -152,7 +157,6 @@ public class SearchGoalActivity extends ListActivity {
         }
     }
 
-
     /**
      * Filter list to show tags matching the search query.
      * If the search query is empty, show the macro skills.
@@ -173,11 +177,11 @@ public class SearchGoalActivity extends ListActivity {
         @Override
         protected void onPostExecute(Cursor cursor) {
             if (cursor != null) {
-                getListView().setVisibility(View.VISIBLE);
-                ((CursorAdapter) getListAdapter()).changeCursor(cursor);
+                mListView.setVisibility(View.VISIBLE);
+                ((CursorAdapter) mListView.getAdapter()).changeCursor(cursor);
             } else {
                 // Show the macro skills
-                getListView().setVisibility(View.GONE);
+                mListView.setVisibility(View.GONE);
             }
         }
     }
@@ -196,6 +200,15 @@ public class SearchGoalActivity extends ListActivity {
         public void bindView(View view, Context context, Cursor cursor) {
             ((ImageView) view.findViewById(R.id.image)).setImageResource(R.drawable.tag_normal);
             view.findViewById(R.id.header).setBackgroundResource(R.drawable.white_clickable);
+
+            if (isAddingGoal) {
+                String goal = cursor.getString(cursor.getColumnIndex(Contract.Tag.NAME));
+                if (!Goal.isManageableGoal(SearchGoalActivity.this, goal)) {
+                    ((ImageView) view.findViewById(R.id.image))
+                            .setImageResource(R.drawable.lock_icon);
+                }
+            }
+
             super.bindView(view, context, cursor);
         }
     }

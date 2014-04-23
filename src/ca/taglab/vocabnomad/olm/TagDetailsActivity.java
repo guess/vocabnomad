@@ -34,8 +34,6 @@ public class TagDetailsActivity extends FragmentActivity implements TagDetailsLi
             RelatedTagsFragment related = RelatedTagsFragment.newInstance(mTagName);
             ManageGoalFragment manager = ManageGoalFragment.newInstance(mTagName, false);
 
-            VocabItemFragment list = VocabItemFragment.newInstance(mTagName);
-
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.tag_title, title)
                     .replace(R.id.definition, definition)
@@ -47,7 +45,7 @@ public class TagDetailsActivity extends FragmentActivity implements TagDetailsLi
     }
 
     @Override
-    public void onGoalLocked() {
+    public void showSuggestions() {
         // The goal is locked, suggest smaller goals for the user to tackle
         SuggestedGoalsFragment suggested = SuggestedGoalsFragment.newInstance(mTagName);
         getSupportFragmentManager().beginTransaction().replace(R.id.suggested, suggested).commit();

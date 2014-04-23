@@ -125,13 +125,16 @@ public class ManageGoalFragment extends Fragment {
                     text.setText("Completed");
                     image.setImageResource(R.drawable.trophy);
                     mLayout.setOnClickListener(null);
+                    if (mListener != null) {
+                        mListener.showSuggestions();
+                    }
                     break;
                 case LOCKED:
                     text.setText("Locked");
                     image.setImageResource(R.drawable.lock);
                     mLayout.setOnClickListener(null);
                     if (mListener != null) {
-                        mListener.onGoalLocked();
+                        mListener.showSuggestions();
                     }
                     break;
                 case NOT_GOAL:
