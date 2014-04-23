@@ -50,7 +50,7 @@ public abstract class AudioRecorderFragment extends Fragment {
 
     /**
      * Start a recording
-     * @return  True if the recording started, False if there is already a recording in progress
+     * @return  True if the recording started, False if there is already a recording in progress_bar
      */
     protected boolean startRecording() {
         if (!mIsRecording) {
@@ -64,7 +64,7 @@ public abstract class AudioRecorderFragment extends Fragment {
     }
 
     /**
-     * Stop the recording in progress
+     * Stop the recording in progress_bar
      * @return  The file path of the recording, Null if one does not exist
      */
     protected String stopRecording() {

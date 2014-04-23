@@ -437,4 +437,15 @@ public abstract class DAO {
         return false;
     }
 
+
+    /**
+     * Close the object's cursor when finished with it to avoid memory leaks.
+     */
+    public void close() {
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+            cursor = null;
+        }
+    }
+
 }

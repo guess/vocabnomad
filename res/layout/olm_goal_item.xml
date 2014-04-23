@@ -13,7 +13,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        style="?android:attr/progressBarStyleHorizontal" />
+        style="?android:attr/progressBarStyleHorizontal"
+        android:progressDrawable="@drawable/progress"/>
 
     <LinearLayout android:id="@+id/tags"
         android:layout_width="match_parent"

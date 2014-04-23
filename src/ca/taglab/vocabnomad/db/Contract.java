@@ -1019,12 +1019,12 @@ public final class Contract {
         public static final String ACTIVE = "active";
 
         /**
-         *  The progress that has been made to complete the goal.
+         *  The progress_bar that has been made to complete the goal.
          */
         public static final String PROGRESS = "progress";
 
         /**
-         *  The progress needed to complete the goal.
+         *  The progress_bar needed to complete the goal.
          */
         public static final String TOTAL = "total";
 

@@ -210,7 +210,7 @@ public class VocabDetailsHeader extends Fragment implements TextToSpeech.OnInitL
     class LoadLevel extends AsyncTask<Void, Void, Integer> {
         @Override
         protected Integer doInBackground(Void... voids) {
-            int level = 0;
+            int level = -1;
             Cursor cursor = VocabLevel.getVocabLevel(getActivity(), mWordId);
             if (cursor != null) {
                 if (cursor.moveToFirst()) {

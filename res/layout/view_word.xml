@@ -11,6 +11,7 @@
         android:id="@+id/tip"
         android:layout_height="100dp"
         android:layout_width="match_parent"
+        android:orientation="horizontal"
         android:background="@drawable/tip"
         android:visibility="gone" />
 
@@ -118,6 +119,7 @@
         android:id="@+id/tags"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginLeft="8dp" />
 
     <ImageView

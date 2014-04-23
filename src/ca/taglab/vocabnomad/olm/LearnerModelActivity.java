@@ -156,7 +156,7 @@ public class LearnerModelActivity extends BaseActivity {
                     return "Goals";
 
                 case 2:
-                    return "Completed";
+                    return "Memory";
             }
 
             return super.getPageTitle(position);

@@ -5,9 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
 
+import java.util.ArrayList;
+
 import ca.taglab.vocabnomad.auth.UserManager;
 import ca.taglab.vocabnomad.db.Contract;
 import ca.taglab.vocabnomad.db.DatabaseHelper;
+import ca.taglab.vocabnomad.olm.UserStats;
 
 /**
  *  A convenience class to access goals within the system.
@@ -77,7 +80,8 @@ public class Goal {
         }
 
         /* Add vocabulary to the vocabulary levels table */
-        VocabLevel.addVocabByTag(context, name);
+        // SKIP: Currently done when a new word is inserted
+        // VocabLevel.addVocabByTag(context, name);
 
         /*  Generate the values to add to the database.
             For a new goal, the database will set level = 1. Otherwise keep the current level. */
@@ -100,8 +104,7 @@ public class Goal {
             db.update(Contract.Goals.TABLE, values, selection, null);
         }
 
-        // TODO: Should updating the progress go here? Or should it only go before drawing the view?
-        // Update the current progress of the goal
+        // Update the current progress_bar of the goal
         Goal.updateProgress(context);
     }
 
@@ -149,7 +152,7 @@ public class Goal {
      * @return the level of the specified goal.
      */
     public static long getGoalLevel(Context context, String goal) {
-        long level = 0;
+        long level = 1;
 
         Cursor cursor = Goal.getGoal(context, goal);
         if (cursor != null) {
@@ -182,8 +185,8 @@ public class Goal {
 
 
     /**
-     * Update the progress of all active goals.
-     * The progress = total # of items that have a level >= goal level.
+     * Update the progress_bar of all active goals.
+     * The progress_bar = total # of items that have a level >= goal level.
      * @param context   Activity or application context.
      */
     public static void updateProgress(Context context) {
@@ -205,7 +208,7 @@ public class Goal {
 
 
     /**
-     * Update the progress for the 'goal' with the 'level'.
+     * Update the progress_bar for the 'goal' with the 'level'.
      * @param context   Activity or application context.
      * @param goal      The name of the goal
      * @param level     The level of the goal
@@ -217,12 +220,12 @@ public class Goal {
 
         long progress = 0;
         if (cursor != null) {
-            // The progress is the number of vocabulary entries returned
+            // The progress_bar is the number of vocabulary entries returned
             progress = cursor.getCount();
             cursor.close();
         }
 
-        // Update the progress column in the goal table
+        // Update the progress_bar column in the goal table
         ContentValues values = new ContentValues();
         values.put(Contract.Goals.PROGRESS, progress);
         db.update(Contract.Goals.TABLE, values, Contract.Goals.GOAL_NAME + "=?", new String[] { goal });
@@ -276,6 +279,56 @@ public class Goal {
     }
 
 
+    public static boolean isCompletedGoal(Context context, String name) {
+        boolean isComplete = false;
+        Cursor cursor = Goal.getCompletedGoals(context, (float) 0);
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    String goal = cursor.getString(cursor.getColumnIndex(Contract.Goals.GOAL_NAME));
+                    if (name.equalsIgnoreCase(goal)) isComplete = true;
+                    cursor.moveToNext();
+                }
+            }
+            cursor.close();
+        }
+
+        return isComplete;
+    }
+
+
+    public static boolean isManageableGoal(Context context, String name) {
+        boolean isManageable = false;
+        DatabaseHelper db = DatabaseHelper.getInstance(context);
+
+        String vocabulary =
+                "SELECT " + Contract.View.WORD_ID + " "
+                        + "FROM " + Contract.View.TABLE + " "
+                        + "WHERE " + Contract.View.NAME + "=?";
+
+        String level =
+                "SELECT " + Contract.VocabLevel.WORD_ID + " "
+                + "FROM " + Contract.VocabLevel.TABLE + " "
+                + "WHERE " + Contract.VocabLevel.LEVEL + "<" + getGoalLevel(context, name);
+
+        String join =
+                "SELECT " + Contract.View.WORD_ID + " "
+                        + "FROM (" + vocabulary + ") AS vocabulary "
+                        + "INNER JOIN (" + level + ") AS " + Contract.VocabLevel.TABLE + " "
+                        + "ON (vocabulary." + Contract.View.WORD_ID + "="
+                        + Contract.VocabLevel.TABLE + "." + Contract.VocabLevel.WORD_ID + ")";
+
+        Cursor cursor = db.rawQuery(join, new String[] { name });
+        if (cursor != null) {
+            isManageable = cursor.getCount() <= 20;
+            cursor.close();
+        }
+
+        return isManageable;
+    }
+
+
     public static boolean isVocabInActiveGoal(Context context, long id) {
         DatabaseHelper db = DatabaseHelper.getInstance(context);
         boolean isInGoal = false;
@@ -326,6 +379,27 @@ public class Goal {
         }
 
         return exceededLimit;
+    }
+
+
+    public static ArrayList<String> getManageableGoals(Context context, String name, int count) {
+        if (TextUtils.isEmpty(name)) return null;
+        ArrayList<String> goals = new ArrayList<String>();
+
+        Cursor cursor = UserStats.getRelatedTags(context, name);
+        if (cursor != null) {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast() && goals.size() < count) {
+                String goal = cursor.getString(cursor.getColumnIndex(Contract.View.NAME));
+                if (Goal.isManageableGoal(context, goal)) {
+                    goals.add(goal);
+                }
+                cursor.moveToNext();
+            }
+            cursor.close();
+        }
+
+        return goals;
     }
 
 

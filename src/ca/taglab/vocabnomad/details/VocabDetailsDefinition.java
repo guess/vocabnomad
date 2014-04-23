@@ -246,9 +246,9 @@ public class VocabDetailsDefinition extends Fragment implements TextToSpeech.OnI
 
         @Override
         protected void onPostExecute(String definition) {
+            if (TextUtils.isEmpty(definition) && !isEdit) onEditPressed();
             this.view.setText(definition);
             initListening(definition);
-            if (TextUtils.isEmpty(definition) && !isEdit) onEditPressed();
         }
     }
 }

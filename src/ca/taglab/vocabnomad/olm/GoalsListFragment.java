@@ -157,7 +157,7 @@ public class GoalsListFragment extends Fragment {
                 mAddButton.setVisibility(View.GONE);
             }
 
-            // Show the list again and remove the progress bar
+            // Show the list again and remove the progress_bar bar
             mList.setVisibility(View.VISIBLE);
             mProgress.setVisibility(View.GONE);
 

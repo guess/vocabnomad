@@ -62,6 +62,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/bar"
+            android:fastScrollEnabled="true"
+            android:smoothScrollbar="false"
             android:groupIndicator="@null" />
 
     </RelativeLayout>

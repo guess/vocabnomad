@@ -150,7 +150,7 @@ public class VocabDetailsActivity extends FragmentActivity implements VocabDetai
     @Override
     public void onStopProgressIncrement() {
         if (--mNumDrawing == 0) {
-            // Only stop when all callers have stopped progress
+            // Only stop when all callers have stopped progress_bar
             mDrawerListener.stopDrawing();
         }
     }
@@ -258,7 +258,7 @@ public class VocabDetailsActivity extends FragmentActivity implements VocabDetai
     }
 
     /**
-     *  Incrementally draw an amount of progress for a particular skill on the progress bar.
+     *  Incrementally draw an amount of progress_bar for a particular skill on the progress_bar bar.
      */
     private class DrawProgress extends Thread {
         private int skill;

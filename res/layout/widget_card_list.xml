@@ -1,6 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:vocabnomad="http://schemas.android.com/apk/res-auto"
-    style="@style/Card">
+    style="@style/Card"
+    android:showDividers="middle"
+    android:divider="?android:dividerHorizontal" >
 
     <include layout="@layout/card_header" />
 

@@ -12,6 +12,8 @@ import android.util.Log;
 
 import java.util.Date;
 
+import ca.taglab.vocabnomad.types.VocabLevel;
+
 public class VocabProvider extends ContentProvider {
 
     public static final String TAG = "VocabProvider";
@@ -464,6 +466,11 @@ public class VocabProvider extends ContentProvider {
         // Insert entry into the table
         id = db.insert(table, null, values);
 
+        // OLM: Add VocabLevel entry if this is vocab entry
+        if (sUriMatcher.match(uri) == WORDS) {
+            addVocabLevel(id);
+        }
+
         if (id > 0) {
             Uri new_uri = ContentUris.withAppendedId(uri, id);
             getContext().getContentResolver().notifyChange(new_uri, null);
@@ -471,6 +478,13 @@ public class VocabProvider extends ContentProvider {
         }
 
         throw new SQLException("Failed to insert row into " + uri);
+    }
+
+
+    private void addVocabLevel(long word_id) {
+        if (word_id > 0) {
+            VocabLevel.addVocab(getContext(), word_id);
+        }
     }
 
 

@@ -113,9 +113,6 @@ public abstract class CardListFragment extends Fragment {
                         }
                         cursor.moveToNext();
                     }
-                } else {
-                    // TODO: There are no items in the list, hide the whole view
-                    // layout.setVisibility(View.GONE);
                 }
                 cursor.close();
             }
@@ -127,8 +124,14 @@ public abstract class CardListFragment extends Fragment {
 
         @Override
         protected void onPostExecute(ArrayList<ViewGroup> views) {
-            for (ViewGroup view : views) {
-                mList.addView(view);
+            if (views != null) {
+                if (views.isEmpty()) {
+                    layout.setVisibility(View.GONE);
+                } else {
+                    for (ViewGroup view : views) {
+                        mList.addView(view);
+                    }
+                }
             }
         }
     }

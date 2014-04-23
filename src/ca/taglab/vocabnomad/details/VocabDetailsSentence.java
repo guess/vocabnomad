@@ -243,9 +243,9 @@ public class VocabDetailsSentence extends Fragment implements TextToSpeech.OnIni
 
         @Override
         protected void onPostExecute(String sentence) {
+            if (TextUtils.isEmpty(sentence) && !isEdit) onEditPressed();
             this.view.setText(sentence);
             initListening(sentence);
-            if (TextUtils.isEmpty(sentence) && !isEdit) onEditPressed();
         }
     }
 }

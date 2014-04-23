@@ -513,7 +513,7 @@ public class EditWordActivity extends Activity {
         final ViewGroup newView = (ViewGroup) LayoutInflater.from(getApplicationContext()).inflate(
                 R.layout.list_item_tag, mContainerView, false);
 
-        ((TextView) newView.findViewById(android.R.id.text1)).setText(name);
+        ((TextView) newView.findViewById(R.id.text)).setText(name);
 
         newView.findViewById(R.id.delete_button).setOnClickListener(new View.OnClickListener() {
             @Override

@@ -418,7 +418,7 @@ public class VocabActivity extends BaseActivity implements
     }
 
     /**
-     * Show the progress bar.
+     * Show the progress_bar bar.
      * Used when loading has been initialized.
      */
     private void showProgressBar() {
@@ -427,7 +427,7 @@ public class VocabActivity extends BaseActivity implements
     }
 
     /**
-     * Hide the progress bar.
+     * Hide the progress_bar bar.
      * Used when loading has completed.
      */
     private void hideProgressBar() {
